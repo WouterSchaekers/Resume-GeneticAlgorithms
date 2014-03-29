@@ -5,9 +5,33 @@
 \usepackage[top=25mm, bottom=25mm, left=25mm, right=25mm]{geometry}
 \usepackage{titlesec}
 \usepackage{graphicx}
+\usepackage{titlesec}
+\titleclass{\subsubsubsection}{straight}[\subsection]
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
 \setcounter{secnumdepth}{4}
-\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\\\}
-\newcommand{\mysubparagraph}[1]{\textbf{#1}\mbox{}\\*}
+\setcounter{tocdepth}{4}
 \begin{document}
 \maketitle
 \setcounter{section}{-1}
@@ -149,7 +173,7 @@ Genetic Programming is a machine learning technique used to optimize a populatio
 Similar to the GA, GP is an evolutionary algorithm inspired by biological evolution to find computer programs that perform a user-defined computational task. It is therefore a machine learning technique used to optimize a population of computer programs according to a fitness landscape determined by a program's ability to perform the given task; it is a domain-independent, biologically inspired method that is able to create computer programs from a high-level problem statement.
 \subsection{Chromosome Representation}
 \subsubsection{Hierarchical Labeled Structure Trees}
-\myparagraph{Basics}
+\subsubsubsection{Basics}
 \begin{itemize}
 \item All tree nodes are either functions or terminals.
 \item Terminals are evaluated directly, i.e., their return values can be calculated and returned immediately.
@@ -179,7 +203,7 @@ Prefix notation: $IF(OR(>(Y,X),<(Y,4)),:=(i,+(i,1)),:=(i,0)).$
 \item (b) $\frac{X+5}{2Y}.$ Prefix notation: $DIV(ADD(X,5),MULT(2,Y)).$
 \end{itemize}
 Graphical representations of the programs are given as FIGURE 2.1, page 30.
-\myparagraph{Evaluation}
+\subsubsubsection{Evaluation}
 As already mentioned previously, the execution (evaluation) of GP chromosomes representing hierarchical computer programs as structure trees is done recursively, dept-first way, and starting from the left.\\
 Internal states before execution: $X = 7, Y = 3, i = 2$.\\*
 Execution:\\*
@@ -193,7 +217,7 @@ $\Rightarrow IF(:=(i,+(i,1)))$\\*
 $\Rightarrow IF(:=(i,+(2,1)))$\\*
 $\Rightarrow IF(:=(i,3))$\\*
 Internal states after execution: $X = 7, Y = 3, i = 3$
-\myparagraph{Genetic Operations: Crossover and Mutation}
+\subsubsubsection{Genetic Operations: Crossover and Mutation}
 As genetic programming is an extension to the genetic algorithm, GP also uses two main operatorsfor producing new solution candidates in the search space, namely crossover and mutation.
 
 Single-point crossover can be simply performed by replacing a subtree of (a copy of) one of the parents by a subtree of the other parent; these subtrees are chosen at random. There can be a chance of creating invalid chromosomes. Mutation can be seen as an arbitrary modification introduced to prevent premature convergence by randomly sampling new points in the search space. In the case of genetic programming, mutation is applied by modifying a randomly chosen node of the respective structure tree:
@@ -201,7 +225,7 @@ Single-point crossover can be simply performed by replacing a subtree of (a copy
 \item A subtree could be deleted or replaced by a randomly re-initialized subtree.
 \item A function node could for example change its function type or turn into a terminal node.
 \end{itemize}
-\myparagraph{Advantages}
+\subsubsubsection{Advantages}
 \begin{itemize}
 \item Most programming language compilers internally convert given programs into parse trees representing the underlying programs.
 \item As evaluation is executed recursively starting from the root node, a newly generated or manipulated program can be (re-)evaluated immediately without any intermediate transformation step.
@@ -215,7 +239,7 @@ With ADFs, a GP chromosome program is split into a main program tree (which is c
 Different approaches realizing modular genetic programming which have gained popularity and are well known in the GP community are the genetic library and the adaptive representation through learning (ARL) algorithm. In both approaches, some parts of the evolved code are automatically extracted from programs (usually of those that show rather good fitness values). These extracted code fragments are then fixed and kept in the GP library, thus they are available for the evolving programs in the GP population.
 \subsubsection{Other Representations}
 There are GP systems that are not based on trees.
-\myparagraph{Linear Genetic Programming}
+\subsubsubsection{Linear Genetic Programming}
 Individuals are represented by linear chromosomes. These linear solutions represent lists of computer instructions which are executed linearly.
 
 Linear GP chromosomes are more similar to those of conventional GAs; however, their size is usually not fixed.\\
@@ -228,7 +252,7 @@ Advantages:
 \item Machine code GPs don't have to be compiled. This is therefore a lot faster.
 \end{itemize}
 \end{itemize}
-\myparagraph{Graphical Genetic Programming}
+\subsubsubsection{Graphical Genetic Programming}
 Parallel Distributed Graphical Programming (PDGP) is a form of GP in which programs are represented as graphs representing functions and terminals as nodes. Links between those nodes define the flow of control and results. PDGP defines a fixed layout for the nodes whereas the connections between them and the referenced functions are evolved by the GP process. PDGP enables high degree of parallelism as well as an efficient and effective reuse of partial results.
 \subsection{Basic Steps of the GP-Based Problem Solving Process}
 \subsubsection{Preparatory Steps}
@@ -292,9 +316,9 @@ What makes GAs and GP unique compared to neighborhood-based search techniques is
 
 \subsection{Stagnation and Premature Convergence}
 Unfortunately, also users of evolutionary algorithms using crossover frequently encounter a problem which is quite similar to the problem of stagnating in a local optimum. This is called premature convergence and occurs if the population of a GA reaches such a suboptimal state that the genetic solution manipulation operators (crossover and mutation) are no longer able to produce offspring that outperform their parents. In general, this happens mainly when the genetic information stored in the individuals of a population does not contain that genetic information which would be necessary to further improve solution quality.\\\\
-\mysubparagraph{Classical Measures for Diversity Maintenance}
+\paragraph{Classical Measures for Diversity Maintenance}
 The most common techniques for this purpose are based upon pre-selection, crowding, or fitness-sharing. The main idea of these techniques is to maintain genetic diversity by the preferred replacement of similar individuals or by the fitness-sharing of individuals which are located in densely populated regions.\\\\
-\mysubparagraph{Limitations of Diversity Maintenance}
+\paragraph{Limitations of Diversity Maintenance}
 In basic GA literature the topic of premature convergence is considered to be closely related to the loss of genetic variation in the entire population. In natural evolution the maintenance of genetic diversity is of major importance as a rich gene pool enables a certain species to adapt to changing environmental conditions. In the case of artificial evolution, the environmental conditions, for which the chromosomes are to be optimized, are represented in the fitness function which usually remains unchanged during the run of an algorithm. Therefore, we do not identify the reasons for premature convergence in the loss of genetic variation in general but more specifically in the loss of what we call essential genetic information, i.e., in the loss of alleles which are part of a global optimal solution. Even more specifically, whereas the alleles of high quality solutions are desired to remain in the gene pool of the evolutionary process, alleles of poor solutions are desired to disappear from the active gene pool in order to strengthen the goal-directedness of evolutionary search.
 
 Therefore, in the following we denote the genetic information of the global optimal solution (which is unknown to the algorithm) as essential genetic information. If parts of this essential genetic information are missing or get lost, premature convergence is already predetermined in a certain way as only mutation (or migration) is able to regain this genetic information.
@@ -397,7 +421,7 @@ Data have been generated with the following parameter settings: $v = 10$ and $r 
 \subsubsection{Description of the algorithms}
 Three types of algorithms were implemented and tested: penalty functions ($A_p[i]$), repair methods ($A_r[i]$) and decoders ($A_d[i]$).
 
-\myparagraph{$A_p[i]$}
+\subsubsubsection{$A_p[i]$}
 \begin{center}
 $eval(x) = \sum_{i=1}^{n}x[i] \cdot P[i] - Pen(x)$
 \end{center}
@@ -409,7 +433,7 @@ is an example of the penalty function. In all three cases:
 $\rho = max_{i=1 \dots n}\{P[i]/W[i]\}$
 \end{center}
 
-\myparagraph{$A_r[i]$}
+\subsubsubsection{$A_r[i]$}
 \begin{center}
 $eval(x) = \sum_{i=1}^{n}x'[i] \cdot P[i]$
 \end{center}
@@ -419,7 +443,7 @@ Some percentage of repaired chromosomes may replace the original chromosomes.
 
 Two different repair algorithms are tested. A random selection and a greedy selection, which selects the item with the lowest profit to weight ratio.
 
-\myparagraph{$A_d[i]$}
+\subsubsubsection{$A_d[i]$}
 The vector $L = \langle 4,3,4,1,1,1 \rangle$ is decoded as the sequence $4, 3, 6, 1, 2, 5$. One-point crossover will produce a feasible offspring. The same can be said about the mutation operator.
 
 Two different decoding algorithms are considered. Random decoding and greedy decoding, which orders the items on the basis of their profit to weight ratios.
@@ -443,26 +467,26 @@ In the future, it might be interesting to experiment with additional formulae fo
 \subsection{The Traveling Salesman Problem}
 Given a finite number of cities along with the cost of travel between each pair of them, the goal is to find the cheapest way of visiting all the cities exactly once and returning to your starting point. Usually the travel costs are symmetric. A tour that passes through all the vertices (cities) is called a Hamiltonian cycle. The goal is to find the shortest Hameltonian cylce.
 \subsubsection{Problem Statement and Solution Methodology}
-\myparagraph{Definition of the TSP}
+\subsubsubsection{Definition of the TSP}
 The aim is to find the optimal tour $s^* \in S$ such that $f(s^*) \leq f(s_k) \forall s_k \in S$.\\*
 $[d_{ij}]$ is the distance matrix. If there is no edge between $i$ and $j$, then the distance is set to $\infty$. If $\pi_k(i)$ represents the city visited next after city $i$, the total distance function becomes\\*
 $f(s_k) = \sum_{i=1}^nd_{i\pi_k(i)}$\\
 TSP can, but don't have to satisfy the triangle inquality.\\*
 In an Euclidian TSP, it is mandatory to specify the coordinates of each node in order to calculate the distance:\\*
 $d_{ij} = \sqrt{(x_i-x_j)^2 + (y_i - y_j)^2}$
-\myparagraph{Versions of the TSP}
-\mysubparagraph{Traveling Salesman Subtour Problems (TSSP)}
+\subsubsubsection{Versions of the TSP}
+\paragraph{Traveling Salesman Subtour Problems (TSSP)}
 Not all cities have to be visited. There is some kind of profit function in order to decide if the profit is higher than the travel expenses.\\
-\mysubparagraph{Postman Problems}
+\paragraph{Postman Problems}
 Not a set of nodes, but a set of edges have to be visited (can be interpreted as streets). Also here, the goal is to minimize the total route length.\\
-\mysubparagraph{Time Dependent TSP}
+\paragraph{Time Dependent TSP}
 The cost is a combination of $d_{ij}$ and the piont of time a certain city is visited.\\
-\mysubparagraph{Traveling Salesman Problem with Time Windows (TSPTW)}
+\paragraph{Traveling Salesman Problem with Time Windows (TSPTW)}
 This is a normal TSP, but the route must start and end in a specific depot within a certain time window. So the cost is the total travel distance and/or the travel time, waiting time and service time.
-\myparagraph{Review of Optimal Algorithms}
-\mysubparagraph{Total Enumeration}
+\subsubsubsection{Review of Optimal Algorithms}
+\paragraph{Total Enumeration}
 This has a complexity of $\mathcal{O}(n!)$. This is only applicable for very small problems.\\
-\mysubparagraph{Integer Programming}
+\paragraph{Integer Programming}
 Introduction of an extra $n \times n$ matrix: $X = [x_{ij}]$, where $x_{ij}$ indicates whether or not there is a connection from city $i$ to city $j$.\\*
 Find $min(\sum_{i=1}^n\sum_{j=1}^nd_{ij}x_{ij})$ such that:\\*
 $\sum_{j=1}^nx_{ij} = 1; \forall i \in \{1, \dots, n\}$\\*
@@ -472,21 +496,21 @@ These constraints simply mean that each city has exaclty one successor and one p
 It is possible that two or more subcycles exist, which does not specify a valid TSP.\\*
 The solution space can be restricted by giving more constraints.
 \subsubsection{Review of Approximation Algorithms and Heuristics}
-\myparagraph{Nearest Neighbor Heuristics}
+\subsubsubsection{Nearest Neighbor Heuristics}
 It considers a city as its starting point and takes the nearest city in order to build up the Hamiltonian cycle. See for figure 8.1, page 126 for the drawback of this heuristic.
-\myparagraph{Partitioning Heuristics}
+\subsubsubsection{Partitioning Heuristics}
 Partition the TSP, solve them and then recombine them. Particularly suitable for partitioning heuristics are only higher dimensional Euclidean TSPs with rather uniformly distributed cities.
-\myparagraph{Local Search}
+\subsubsubsection{Local Search}
 These are $k$-change methods that examine a $k$-tuple of edges of a given tour and test whether or not a replacement of the tour segments effects in an improvement of the actual solution quality.
-\myparagraph{The 2-Opt Method}
+\subsubsubsection{The 2-Opt Method}
 2 edges are replaced (a 2-change operation). A tour $s_i$ is adjacent to a tour $s_j$ if and only if $s_j$ can be derived from $s_i$ by replacing two of $s_i$'s edges. See figure 8.2, page 128 for an example.\\*
 Any route can be derived from any other route by at most $n-2$ 2-change operations. Any solution has exactly $\frac{n(n-1)}{2}$ neighbors. For symmetrical TSPs this is $\frac{n(n-2)}{2}$. Do a 2-change until there is no improvement possible.\\*
 It is very unlikey that a 2-optimal tour is globally optimal.
-\myparagraph{The 3-Opt Method}
+\subsubsubsection{The 3-Opt Method}
 Cfr.\\*
 $\frac{n(n-1)(n-2)}{2}$ operations are possible.\\*
 The probability to obtain a global optimal solution, is about $2^{-\frac{n}{10}}$.
-\myparagraph{The $k$-opt Method}
+\subsubsubsection{The $k$-opt Method}
 Cfr.\\*
 A $k$-optimal solution is a global solution if $k = n$.
 \subsubsection{Multiple Traveling Salesman Problems}
@@ -498,8 +522,8 @@ A set of salesman will try to do the job, each serving a subset of the cities in
 The depot has to be visited in all tours.\\*
 Notice that in the second definition, the solution will be a single tour (because of the triangle inequality). More constraints are needed.
 \subsubsection{Genetic Algorithm Approaches}
-\myparagraph{Problem Representations and Operators}
-\mysubparagraph{Adjacency Representation}
+\subsubsubsection{Problem Representations and Operators}
+\paragraph{Adjacency Representation}
 A tour is represented as a list of $n$ cities where $j$ is listed in position $i$ if and only if the tour leads from city $i$ to city $j$. For example:\\*
 $(7\ 6\ 8\ 5\ 3\ 4\ 2\ 1)$ means that city $7$ comes right after city $1$.\\*
 This representation is unique, but can represent an illegal tour. $(2\ 1\ 4\ 3)$ contains two separate cylces.\\*
@@ -512,14 +536,14 @@ Good subtours are often disrupted by the crossover operator. Therefore, this ope
 \item Heuristic Crossover: The same as alternating edge crossover, but here the shortest next city is chosen.
 \end{itemize}
 The performance of the crossover operators are $3rd > 2nd > 1st$, but the performance of these crossover operators is overall quite bad.\\
-\mysubparagraph{Ordinal Representation}
+\paragraph{Ordinal Representation}
 The best way to construct an ordinal representation is to start from the normal representation of a tour: $1-2-7-5-6-3-4$\\*
 and its indices:
 $(1\ 2\ 3\ 4\ 5\ 6\ 7)$\\*
 Then construct the ordinal representation by saying that the first city is also the first index, then remove $1$ from the indices. $2$ is again the first index (because we removed $1$), \dots.\\*
 In this example we get: $(1\ 1\ 5\ 3\ 3\ 1\ 1)$\\
 The main advantage of this method is the fact that classical crossover can be used because only cities can be chosen that have not been chosen before. Despite this, results using ordinal representaion have been generally poor (the partial tour to the right of the crossover point are split in a random way).\\
-\mysubparagraph{Path Representation}
+\paragraph{Path Representation}
 The path representation is exactly the same as a normal tour representation. Crossover operators:
 \begin{itemize}
 \item Partially Matched Crossover (PMX): The best way to explain this crossover operator is with an example. See figure 8.4, page 134. Two cutting points are selected. Then that substring from the first parent is replaced with the corresponding substring from the second parent. The elements from parent 1 that replace the elements of parent 2 in the child are being replaced by the elements that have been replaced.\\
@@ -721,7 +745,7 @@ where $w_3$ determines the influence of $cost$ and $f$ grows very slowly on $[0,
 Initial experiments suggest that the system performs better when the $f$ exponent somehow fluctuates, and that the final increase should start based upon an anticipated exhaustion of resources or when the currently learned description is already complete and consistent.
 
 \subsubsection{Operators}
-\myparagraph{Rule set level}
+\subsubsubsection{Rule set level}
 This is the level of sets of $VL_1$ complexes.
 \begin{itemize}
 \item Independent: It exchanges random rules between two parent rule sets.
@@ -738,7 +762,7 @@ This is the level of sets of $VL_1$ complexes.
 \end{itemize}
 \end{itemize}
 
-\myparagraph{Rule level}
+\subsubsubsection{Rule level}
 This is the level of $VL_1$ complexes.
 \begin{itemize}
 \item Independent:
@@ -757,7 +781,7 @@ This is the level of $VL_1$ complexes.
 \end{itemize}
 \end{itemize}
 
-\myparagraph{Condition level}
+\subsubsubsection{Condition level}
 This is the level of $VL_1$ selectors.
 \begin{itemize}
 \item Independent:
@@ -774,7 +798,7 @@ This is the level of $VL_1$ selectors.
 \end{itemize}
 \end{itemize}
 
-\myparagraph{Operator selection probability}
+\subsubsubsection{Operator selection probability}
 Chinese.
 
 \subsubsection{Algorithm}
@@ -805,10 +829,10 @@ The formula in section \ref{sec:evaluation} can be used for qualitative properti
 \subsubsection{Emerald's robot world}
 See a summary of the world on page 213.
 
-\myparagraph{The trace}
+\subsubsubsection{The trace}
 \dots
 
-\myparagraph{Comparative experiments}
+\subsubsubsection{Comparative experiments}
 GIL produced the highest recognition rate, especially when seeing only a small percentage of the events. This result can be attributed to the simplicity-biased evaluation formula that was used.
 
 \subsubsection{DNF concepts}
