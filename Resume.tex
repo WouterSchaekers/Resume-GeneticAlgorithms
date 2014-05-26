@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{book}
 \title{Resume of Genetic Algorithms and Evolutionary Computing [H02D1A]}
 \author{Wouter Schaekers\\*---\\*Master Ingenieurswetenschappen: Wiskundige Ingenieurstechnieken\\*Master Ingenieurswetenschappen: Biomedische Technologie\\*Master Artificial Intelligence\\*Master Statistics\\*Master Informatica\\*Master Ingenieurswetenschappen: Computerwetenschappen\\*Master Biomedical Engineering\\*Master Engineering: Computer Science}
 \usepackage{amsmath}
@@ -40,7 +40,7 @@
 \setcounter{tocdepth}{3}
 \tableofcontents
 \clearpage
-\section{Introduction}
+\chapter*{Introduction}
 This resume has been composed on the basis of Genetic Algorithms and Genetic Programming - Modern Concepts and Practical Applications, by Michael Affenzeller, Stephan Winkler, Stefan Wagner, and Andreas Beham and also a bunch of papers (see the table of contents for a full list).\\*
 Because books and courses only contain 5\% of content these days, I was able to reduce the total amount of pages significantly. This resume has been prepared with the idea that this course can be completed successfully, solely on the basis of this summary.\\*
 If you encounter empty sections, this is not because I have forgotten it, but because these sections contain a lot of grumbling without content.
@@ -62,10 +62,10 @@ This resume is released under the beerware license. Donations on the following b
 \includegraphics[scale=0.02]{Bitcoin.png} \textbf{19Shd7w2UEUns1zJDDqWgxPRf9ARzo1iD9}
 \end{center}
 \clearpage
-\section{Chapter 1 - Simulating Evolution: Basics about Genetic Algorithms}
-\subsection{The Evolution of Evolutionary Computation}
-There are two approaches in computer science that copy evolutionary mechanisms: evolution strategies (ES) and genetic algorithms (GA). In contrast to GAs, where the main role of the mutation operator is simply to avoid stagnation, mutation is the primary operator of evolution strategies. Genetic programming (GP) is an extension of the genetic algoritm. While GAs are intended to find arrays of characters or numbers, the goal of a GP process is to search for computer programs.
-\subsection{The Basics of Genetic Algorithms}
+\chapter{Simulating Evolution: Basics about Genetic Algorithms}
+\section{The Evolution of Evolutionary Computation}
+There are two approaches in computer science that mimic evolutionary mechanisms: evolution strategies (ES) and genetic algorithms (GA). In contrast to GAs, where the main role of the mutation operator is simply to avoid stagnation, mutation is the primary operator of evolution strategies. Genetic programming (GP) is an extension of the genetic algoritm. While GAs are intended to find arrays of characters or numbers, the goal of a GP process is to search for computer programs.
+\section{The Basics of Genetic Algorithms}
 A genetic algorithm works the following way:
 \begin{itemize}
 \item An initial population is generated (randomly or heuristically).
@@ -78,7 +78,7 @@ For the production of offspring, two methods are being used:
 \end{itemize}
 Convergence is not guaranteed. The algorithm terminates if the maximum number of iterations is reached or by finding an acceptable solution.\\*
 See figure 1.1, page 4 for a short overview. (This is the canonical genetic algorithm (CGA), because it is the basis for theoretical GA research.)
-\subsection{Biological Terminology}
+\section{Biological Terminology}
 It is obvious that there is a close connection between genetic algorithms and biological evolution.
 \begin{itemize}
 \item A gene can be understood as an "encoder" of a characteristic, such as eye color.  The different possibilities for a characteristic is called an 'allele'.
@@ -86,23 +86,23 @@ It is obvious that there is a close connection between genetic algorithms and bi
 \item The fitness of an organism is typically defined as its probability to reproduce, or as a function of the number of offspring the organism has produced.
 \end{itemize}
 The term chromosome refers to a solution candidate.
-\subsection{Genetic Operators}
-\subsubsection{Models for Parent Selection}
+\section{Genetic Operators}
+\subsection{Models for Parent Selection}
 According to the fitness, individuals are chosen for the production of offspring. There are many ways of accomplishing this:
 \begin{itemize}
 \item Proportional selection (the roulette wheel): Each individual receives a proportional chance of being chosen (fitness/total fitness). Method can easily be programmed by calculating the cumulative chance (which is 1 for the last individual) and then generate a random number between $0$ and $1$.
 \item Linear-rank selection: The best individual receives $x$ times more chance of being chosen than the worst individual. $x$ is pre-determined. This 'flattens out' the differences between the fitness values. Each individual has at least one representation (even if the fitness is $0.00\dots1$).
 \item Tournament selection: The most common variant is $k$-tournament, where $k$ individuals are picked. The fittest individual is then chosen.
 \end{itemize}
-\subsubsection{Recombination (Crossover)}
+\subsection{Recombination (Crossover)}
 \begin{itemize}
 \item Single point crossover: Crossover over $1$ point. See figure 1.2, page 8 for a graphical illustration.
 \item Multiple point crossover: Crossover over $n$ points. These points are divided uniformly among the chromosome. The higher the $n$, the more disruptive this process is (obviously).
 \item Uniform crossover: For each gene, randomly choose one of the parents.
 \end{itemize}
-\subsubsection{Mutation}
+\subsection{Mutation}
 Mutation takes the form of replacing an allele with a randomly chosen value in the appropriate range with probability $p_m$ (usually smaller than 0.1). Mutation must be used with caution. In some problems like routing, this can lead to illegal chromosomes. The mutation can also adapt during the process (eg, more local to the end).
-\subsubsection{Replacement Schemes}
+\subsection{Replacement Schemes}
 In this subsubsection, we will discuss the way a new offspring should become members of the next generation.
 \begin{itemize}
 \item Generational Replacement: The entire population is replaced.
@@ -111,21 +111,21 @@ In this subsubsection, we will discuss the way a new offspring should become mem
 \item Delete-n: Replace $n$ random individuals.
 \item Tournament Replacement: Competitions are run between sets of individuals from the last and the actual generation, with the winners becoming part of the new population.
 \end{itemize}
-\subsection{Problem Representation}
-\subsubsection{Binary Representation}
+\section{Problem Representation}
+\subsection{Binary Representation}
 Chromosomes can be in binary representation. An example of a binary representation is the Traveling Salesman Problem, where each city is represented as $log_2(n)$ bits. A chromosome has a length of $nlog_2(n)$. There is also an alternative representation where a matrix is used ($1$ if city $i$ is visited after city $j$, $0$ otherwise). Because the offspring may be illegal, repair strategies must be used. These can lead to offspring that has not much in comon with the parents, something that counteracts the general functioning of GAs.
-\subsubsection{Adjecency Representation}
+\subsection{Adjecency Representation}
 The adjecency representation of a city is the following. If a tour in the TSP leads from city $i$ to city $j$, $j$ is listed on position $i$. To produce offspring, one can use alternating edges crossover. This means that an edge from one parent is chosen from the first location. Then this new city is the new location. The city in this location from the other parent is chosen. This goes on until all cities are chosen. If a city is chosen twice, this means that there is a cycle. A random other city must then be chosen.\\
 The advantage is the fact that the child is build up with edges from its parents. The disadvantage is the fact that the child does not inherit longer tour segments.
-\subsubsection{Path Representation}
+\subsection{Path Representation}
 The $n$ cities of a tour are put in order according to a list of length $n$. Despite of being quite popular, the obvious disadvantage of this representation is the fact that each configuration can be described is $2n$ different ways.
-\subsubsection{Other Representations for Combinatorial Optimization Problems}
+\subsection{Other Representations for Combinatorial Optimization Problems}
 Other combinatorial optimization problems are logistics and production planning, the job scheduling problem, \dots.
-\subsubsection{Problem Representations for Real-Valued Encoding}
+\subsection{Problem Representations for Real-Valued Encoding}
 When using real-valued encoding, the dimension of the chromosomes is equal to the dimension of the solution vectors.\\*
 Crossover concepts are divided into discrete and continuous recombination. The discrete crossover copies the exact allele value of the parent. The continuous crossover performs some kind of averaging.\\*
 In real-valued encoding, long building blocks are less or not important, in comparison with typical discrete representations.
-\subsection{GA Theory: Schemata and Building Blocks}
+\section{GA Theory: Schemata and Building Blocks}
 Holland has introduced a construct called schema. A schema is a string with fixed and variable symbols (wild cards/don't cares). For example, $[0\#11\#01]$ can represent the following strings: $[0011001]$, $[0011101]$, $[0111001]$ and $[0111101]$.\\*
 The number of individuals of the population belonging to a particular schema $H$ at time $t+1$ is related to the same number at the time $t$ as:\\*
 $m(H,t+1) = m(H,t)\frac{f_H(t)}{\overline{f}(t)}$\\*
@@ -139,19 +139,19 @@ To sum up:\\*
 $m(H,t+1) \ge m(H,t)\frac{f_H(t)}{\overline{f}(t)}[1-p_c\frac{\delta(H)}{l-1}-o(H)p_m]$\\*
 This means that a schemata will grow or decrease exponentially.\\
 The drawback of the building block theory is given by the fact that the underlying GA (binary encoding, proportional selection, single-point crossover, strong mutation) is applicable only to very few problems as it requires more sophisticated problem representations and corresponding operators to tackle challenging real-world problems.
-\subsection{Parallel Genetic Algorithms}
+\section{Parallel Genetic Algorithms}
 Parallel genetic algorithms can be classified as global parallelization or coarse-grained parallel GAs. The coarse-grained variant (island model) is the most popular.
-\subsubsection{Global Parallelization}
+\subsection{Global Parallelization}
 In global parallelization, there is a master and many slaves. The master gives a part of the population to the slaves, while the slaves return the fitness value of the subset they have received.\\*
 This only works for populations that are panmictic, where all individuals are possible mating partners.
-\subsubsection{Coarse-Grained Parallel GAs}
+\subsection{Coarse-Grained Parallel GAs}
 Here, the population is divided into multiple subpopulations (so called islands or demes) that evolve isolated from each other, exept for an occasionally 'migration'. See figure 1.4, page 19 for the ones who like pictures. The qualitative performance is influenced by the number and size of the demes and also by the amount of migrations.\\
 Relatively isolated demes will converge to different regions of the solution-space, and migration and recombination will combine these.\\ The only example is the SASEGASA algorithm (see chapter 5).
-\subsubsection{Fine-Grained Parallel GAs}
+\subsection{Fine-Grained Parallel GAs}
 The basic idea behind this model is that the individuals are spread throughout the global population like molecules in a diffusion process. Diffusion models are also called cellular models. In the diffusion model, a processor is assigned to each individual and recombination is restricted to the local neighborhood of each individual. This diffusion model is a sort of fine-grained parallel GA.\\*
 This kind of approach can be compared with the coarse-grained method, but the demes are very small.\\*
 Coarse-grained and fine-grained models are often mixed.
-\subsubsection{Migration}
+\subsection{Migration}
 Important parameters for migration are:
 \begin{itemize}
 \item The communication topology of the interconnections between the demes.
@@ -161,18 +161,18 @@ Important parameters for migration are:
 \end{itemize}
 Synchronous migration (constant intervals) is usefull for parallel GAs, but has shown to be slow and inefficient in some cases. Asynchronous migration only happend after specific events.\\
 Self-adaptive selection pressure steering can detect local premature convergence (in a certain deme). This can be very efficient for parallel implementations. The fact that selection pressure is adjusted self-adaptively, makes (parallel) GAs more independent in terms of migration parameters.
-\subsection{The Interplay of Genetic Operators}
+\section{The Interplay of Genetic Operators}
 Because of crossover, a breadth search will happen.\\*
 Mutation will avoid stagnation, so it is a depth search. However, crossover can bring this new information to other places of the search space. Then it becomes breadth search again.\\
 Migration in coarse-grained parallel GAs functions somehow like a meta-model of mutation and is therefore a depth operator. Migration causes an increase of genetic diversity in the specific demes, but decreases the diversity over all islands. This is called \textit{exploitation of the search space}.
 \clearpage
-\section{Chapter 2 - Evolving Programs: Genetic Programming}
-\subsection{Introduction: Main Ideas and Historical Background}
+\chapter{Evolving Programs: Genetic Programming}
+\section{Introduction: Main Ideas and Historical Background}
 Genetic Programming is a machine learning technique used to optimize a population of computer programs according to a fitness landscape determined by a program's ability to perform the given task; it is a domain-independent, biologically inspired method that is able to create computer programs from a high-level problem statement.
 
 Similar to the GA, GP is an evolutionary algorithm inspired by biological evolution to find computer programs that perform a user-defined computational task. It is therefore a machine learning technique used to optimize a population of computer programs according to a fitness landscape determined by a program's ability to perform the given task; it is a domain-independent, biologically inspired method that is able to create computer programs from a high-level problem statement.
-\subsection{Chromosome Representation}
-\subsubsection{Hierarchical Labeled Structure Trees}
+\section{Chromosome Representation}
+\subsection{Hierarchical Labeled Structure Trees}
 \subsubsubsection{Basics}
 \begin{itemize}
 \item All tree nodes are either functions or terminals.
@@ -231,13 +231,13 @@ Single-point crossover can be simply performed by replacing a subtree of (a copy
 \item As evaluation is executed recursively starting from the root node, a newly generated or manipulated program can be (re-)evaluated immediately without any intermediate transformation step.
 \item Structure trees allow the representation of programs whose size and shape change dynamically.
 \end{itemize}
-\subsubsection{Automatically Defined Functions (ADF) and Modular Genetic Programming}
+\subsection{Automatically Defined Functions (ADF) and Modular Genetic Programming}
 The main idea of ADFs is that program code (which has been evolved during the GP process) is organized into useful groups (subroutines); this enables the parameterized reuse and hierarchical invocation of evolved code as functions that have not been taken from the original functions set $F$ but are rather defined automatically. The (re-)use of subroutines (subprograms, procedures) is enabled in this way.
 
 With ADFs, a GP chromosome program is split into a main program tree (which is called and executed from outside) and arbitrarily many separate trees representing ADFs. These separate functions can take arguments as well as be called by the main program or another ADF.
 
 Different approaches realizing modular genetic programming which have gained popularity and are well known in the GP community are the genetic library and the adaptive representation through learning (ARL) algorithm. In both approaches, some parts of the evolved code are automatically extracted from programs (usually of those that show rather good fitness values). These extracted code fragments are then fixed and kept in the GP library, thus they are available for the evolving programs in the GP population.
-\subsubsection{Other Representations}
+\subsection{Other Representations}
 There are GP systems that are not based on trees.
 \subsubsubsection{Linear Genetic Programming}
 Individuals are represented by linear chromosomes. These linear solutions represent lists of computer instructions which are executed linearly.
@@ -254,21 +254,21 @@ Advantages:
 \end{itemize}
 \subsubsubsection{Graphical Genetic Programming}
 Parallel Distributed Graphical Programming (PDGP) is a form of GP in which programs are represented as graphs representing functions and terminals as nodes. Links between those nodes define the flow of control and results. PDGP defines a fixed layout for the nodes whereas the connections between them and the referenced functions are evolved by the GP process. PDGP enables high degree of parallelism as well as an efficient and effective reuse of partial results.
-\subsection{Basic Steps of the GP-Based Problem Solving Process}
-\subsubsection{Preparatory Steps}
+\section{Basic Steps of the GP-Based Problem Solving Process}
+\subsection{Preparatory Steps}
 There are some things to be done regarding the execution of the GP algorithm:
 \begin{itemize}
 \item Parameters that control the GP run have to be set.
 \item A termination criterion has to be defined.
 \item A result designation method has to be defined. (Explained later in section \ref{sec:2.3.4}.)
 \end{itemize}
-\subsubsection{Initialization}
+\subsection{Initialization}
 There are two possibilities for creating random initial programs:
 \begin{itemize}
 \item Full method: Nodes at depth $d < D_{max}$ point to randomly chosen functions from function set $F$, and nodes at depth $d = D_{max}$ are randomly chosen terminals (from terminal set $T$).
 \item Grow method: Nodes at depth $d < D_{max}$ become either a function or a terminal (randomly chosen from $F \cup T$), and nodes at depth $d = D_{max}$ are again randomly chosen terminals (from $T$).
 \end{itemize}
-\subsubsection{Breeding Populations of Programs}
+\subsection{Breeding Populations of Programs}
 Populations cannot grow infinitely in most applications. New programs have to replace old ones.
 \begin{itemize}
 \item Generational replacement: The entire population is replaced.
@@ -276,21 +276,21 @@ Populations cannot grow infinitely in most applications. New programs have to re
 \item Selection of replaced programs: The individuals that have to be removed can either be unfit ones, old ones or random ones.
 \end{itemize}
 The next creation scheme applies: In GAs, crossover and mutation are used sequentially. In GP, crossover and mutation (or a simple copy action) are executed independently; each time a new offspring is to be created, one of these variants is chosen probabilistically.
-\subsubsection{Process Termination and Results Designation}
+\subsection{Process Termination and Results Designation}
 \label{sec:2.3.4}
 The termination criteria of genetic algorithms are also applicable for geneteic programming. For example the number of generations, when a problem-specific success predicate is fulfilled or when the values of fitness for numerous successive best-of-generation individuals appear to have reached a plateau. See figure 2.10, page 42 for a full summary.
 
 After terminating the algorithm, the best individual has to be chosen as the result. In some cases it is a good idea to let the program run against a validation set $V$, which was not used during the GP training phase.
 
-\subsection{Typical Applications of Genetic Programming}
-\subsubsection{Automated Learning of Multiplexer Functions}
+\section{Typical Applications of Genetic Programming}
+\subsection{Automated Learning of Multiplexer Functions}
 The automated learning of functions requires the development of compositions of functions that can return correct values of functions after seeing only a relatively small number of specific examples; these training samples are combinations of values of the function associated with particular combinations of arguments.
 
 An example is the multiplexer. $k$ address bits and $2^k$ data bits. This makes $2^{k+2^k}$ combinations. The evaluation of a solution candidate is done by applying the formula to all possible input bit combinations and counting the number of correct output values.
 
 Korza was able to show that GP is able to solve the 3-address multiplexer problem $100\%$ correctly.
 
-\subsubsection{The Artificial Ant}
+\subsection{The Artificial Ant}
 The problem is to navigate an artificial ant on a grid consisting of 32x32 cells. The grid is toroidal so that if the ant moves off the edge of the grid, it reappears and continues on the opposite edge. On this grid, 'food' units are distributed; each time the ant enters a square containing food, the ant eats it. At the beginning of the ant's wanderings it starts at cell (0,0) facing in a particular direction; at each time step, the ant is able to move forward in the direction it is facing, to turn right, or to turn left. The goal is to find a program that is able to navigate the ant so that as many food items as possible are eaten in a certain number of time units.
 \begin{itemize}
 \item The operations Move, Left and Right are used as terminals in the GP process.
@@ -298,7 +298,7 @@ The problem is to navigate an artificial ant on a grid consisting of 32x32 cells
 \item Prog2 and Prog3, are also functions. They take 2 or 3 arguments and execute them consecutively.
 \end{itemize}
 An example of the ant problem is the so-called "Santa Fe trail".
-\subsubsection{Symbolic Regression}
+\subsection{Symbolic Regression}
 Symbolic regression is the induction of mathematical expressions on data. The key feature of this technique is that the object of search is a symbolic description of a model, not just a set of coefficients in a pre-specified model.
 
 The main goal of regression in general is to determine the relationship of a depdendent (target) variable $t$ to a set of specified independent (input) variables $x$. What we want to get is a function $f$ that uses $x$ and a set of coefficients $w$ such that
@@ -308,13 +308,13 @@ $t = f(x,w) + \epsilon$
 The form of $f$ is usually pre-defined in standard regression and ANNs. This is not true in symbolic regression. Instead low-level functions are used and combined to more complex formulas during the GP process.
 
 The taks of GP in symbolic regression is to find a composition of the functions, input variables, and coefficients that minimizes the error of the function with repsect to the desired target values. One of the ways to measure the error is taking the mean squared value.
-\subsubsection{Other GP Applications}
+\subsection{Other GP Applications}
 \clearpage
-\section{Chapter 3 - Problems and Success Factors}
-\subsection{What Makes GAs and GP Unique among Intelligent Optimization Methods?}
+\chapter{Problems and Success Factors}
+\section{What Makes GAs and GP Unique among Intelligent Optimization Methods?}
 What makes GAs and GP unique compared to neighborhood-based search techniques is the crossover procedure which is able to assemble properties of solution candidates which may be located in very different regions of the search space. In this sense, the ultimate goal of any GA or GP is to assemble and combine the essential genetic information step by step. This information is initially scattered over many individuals and must be merged to single chromosomes by the final stage of the evolutionary search process. This is exactly the essential property that has the potential to make GAs and GP much more robust against premature stagnation in local optimal solutions than search algorithms working without crossover.
 
-\subsection{Stagnation and Premature Convergence}
+\section{Stagnation and Premature Convergence}
 Unfortunately, also users of evolutionary algorithms using crossover frequently encounter a problem which is quite similar to the problem of stagnating in a local optimum. This is called premature convergence and occurs if the population of a GA reaches such a suboptimal state that the genetic solution manipulation operators (crossover and mutation) are no longer able to produce offspring that outperform their parents. In general, this happens mainly when the genetic information stored in the individuals of a population does not contain that genetic information which would be necessary to further improve solution quality.\\\\
 \paragraph{Classical Measures for Diversity Maintenance}
 The most common techniques for this purpose are based upon pre-selection, crowding, or fitness-sharing. The main idea of these techniques is to maintain genetic diversity by the preferred replacement of similar individuals or by the fitness-sharing of individuals which are located in densely populated regions.\\\\
@@ -333,13 +333,13 @@ Reflecting the basic concepts of GAs, the following questions and associated pro
 \end{itemize}
 \clearpage
 
-\section{Chapter 4 - Preservation of Relevant Building Blocks}
-\subsection{What Can Extended Selection Concepts Do to Avoid Premature Convergence?}
+\chapter{Preservation of Relevant Building Blocks}
+\section{What Can Extended Selection Concepts Do to Avoid Premature Convergence?}
 The ultimate goal of the extended algorithmic concepts described in this chapter is to support crossover-based evolutionary algorithms, i.e., evolutionary algorithms that are ideally designed to function as building-block assembling machines, in their intention to combine those parts of the chromosomes that define high quality solutions. In this context we concentrate on selection and replacement which are the parts of the algorithm that are independent of the problem representation and the according operators.
 
 The unifying purpose of the enhanced selection and replacement strategies is to introduce selection after reproduction in a way that checks whether or not crossover and mutation were able to produce a new solution candidate that outperforms its own parents. Offspring selection realizes this by claiming that a certain ratio of the next generation has to consist of child solutions that were able to outperform their own parents. The RAPGA, the second newly introduced selection and replacement strategy, ideally works in such a way that new child solutions are added to the new population as long as it is possible to generate unique and successful offspring stemming from the gene pool of the last generation. Both strategies imply a self-adaptive regulation of the actual selection pressure that depends on how easy or difficult it is at present to achieve evolutionary progress. An upper limit for the selection pressure provides a good termination criterion for single population GAs as well as a trigger for migration in parallel GAs.
 
-\subsection{Offspring Selection (OS)}
+\section{Offspring Selection (OS)}
 After selection of the parents, crossover and mutation, we introduce a further selection mechanism. A new parameter called success ratio ($SuccRatio \in [0,1]$) is introduced. This is the quotient of the next population members that have to be generated by successful mating in relation to the total population size. A child is successful if its fitness is better than the fitness of its parents (the weak one, the strong one or weighted average?).
 
 Accoring to simulated annealing, it is a weighted average with a comparison factor ($CompFactor$). 0 means the weak parent, 1 means the strong parent.
@@ -355,7 +355,7 @@ The upper limit of selection pressure ($MaxSelPress$) defines the maximum number
 
 Higher success ratios cause higher selection pressures. Nevertheless, higher settings of success ratio, and therefore also higher selection pressures, do not necessarily cause premature convergence. The reason for this is mainly that the new selection step does not accept clones that are derived from two identical parents per definition. In conventionals GAs such clones represent a major reason for premature convergence of the whole population around a suboptimal value, whereas the new offspring selection works against this phenomenon.
 
-\subsection{The Relevant Alleles Preserving Genetic Algorithm (RAPGA)}
+\section{The Relevant Alleles Preserving Genetic Algorithm (RAPGA)}
 Assuming generational replacement as the underlying replacement strategy, the most essential question at generation $i$ is which parts of genetic information from generation $i$ should be maintained in generation $i+1$.
 
 Offspring are accepted as members of the next generation if and only if they are able to outperform the fitness of their own parents and if they are new in the sense that their chromosome consists of a concrete allele alignment that is not represented yet in an individual of the next generation.
@@ -369,7 +369,7 @@ Aspects to consider:
 \item If the maximally allowed population size cannot be filled up with new successful individuals, an upper limit of effort in terms of generated individuals is necessary. The maximum effort per generation is the maximum number of newly generated chromosomes per generation.
 \end{itemize}
 
-\subsection{Consequences Arising out of Offspring Selection and RAPGA}
+\section{Consequences Arising out of Offspring Selection and RAPGA}
 \textit{Is crossover always able to fulfill the implicit assumption that two above-average parents can produce even better children?}\\*
 Unfortunately this is not accomplished for a lot of operators in many theoretical as well as practical applications. A lot of offspring solution candidates do not meet certain constraints have to be 'repaired'. This leads to the fact that certain alleles are not present in the parents. Also, some operators do not support the evolvement of longer building blocks.\\\\
 \textit{Which of the available crossover operators is best suited for a certain problem in a certain representation?}\\*
@@ -382,7 +382,7 @@ Why does the answer to question 3 make sense? Even parts of chromosomes with bel
 \textit{Which parts of the chromosomes of parents of above-average fitness are really worth being preserved?}\\*
 Ideally speaking, exaclty those parts of the chromosomes of above-average parents should be transferred to the next generation that make these individuals above average. What may sound like a tautology at the first view cannot be guaranteed for a lot of problem representations and corresponding operators.
 
-\subsection{Genetic algorithms, constraints, and the knapsack problem [Genetic Algorithms + Data Structures = Evolution Programs, by Z. Michalewicz]}
+\section{Genetic algorithms, constraints, and the knapsack problem [Genetic Algorithms + Data Structures = Evolution Programs, by Z. Michalewicz]}
 A constrained problem is transformed to an unconstrained one by associating a penalty with all constraint violations; these penalties are included in the function of evaluation. A variety of possible penalty functions can be applied.
 
 A version of penalty approach is elimination of non-feasible solutions from the population (death penalty). Such approach has its drawbacks, because for some problems the probability of generating a feasible solution is relatively small. In this approach non-feasible solutions do not contribute to the gene-pool of any population.
@@ -391,7 +391,7 @@ Special repair algorithms may be used, but might be computational intensive and 
 
 A third approach is the use of special representation mappings which guarantee the generation of a feasible solution or the use of problem-specific operators which preserve the feasibility of the solutions.
 
-\subsubsection{The 0/1 knapsack problem and the test data}
+\subsection{The 0/1 knapsack problem and the test data}
 A set of entities, together with their values and sizes, is given, and it is desired to select one or more disjoint subsets so that the of the sizes in each subset does not exceed given bounds and the total of the selected values is maximized. The task is, for a given set of weights $W[i]$, profits $P[i]$ and capacity $C$ to find a binary vector $x = \langle x[1], \dots, x[n]\rangle$ such that
 \begin{center}
 $\sum_{i = 1}^{n}x[i] \cdot W[i] \le C$,
@@ -418,7 +418,7 @@ Higher correlation problems have higher expected difficulty.
 
 Data have been generated with the following parameter settings: $v = 10$ and $r = 5$ and $n = 100$, $250$ and $500$.
 
-\subsubsection{Description of the algorithms}
+\subsection{Description of the algorithms}
 Three types of algorithms were implemented and tested: penalty functions ($A_p[i]$), repair methods ($A_r[i]$) and decoders ($A_d[i]$).
 
 \subsubsubsection{$A_p[i]$}
@@ -448,7 +448,7 @@ The vector $L = \langle 4,3,4,1,1,1 \rangle$ is decoded as the sequence $4, 3, 6
 
 Two different decoding algorithms are considered. Random decoding and greedy decoding, which orders the items on the basis of their profit to weight ratios.
 
-\subsubsection{Experiments and results}
+\subsection{Experiments and results}
 In all experiments the population size was constant and equal to 100. Also, probabilities of mutation and crossover were fixed at 0.05 and 0.65. The best solution found within 500 generations is the result.
 
 The main conclusions:
@@ -463,10 +463,10 @@ In the future, it might be interesting to experiment with additional formulae fo
 \clearpage
 
 \setcounter{section}{7}
-\section{Chapter 8 - Combinatorial Optimization: Route Planning}
-\subsection{The Traveling Salesman Problem}
+\chapter{Combinatorial Optimization: Route Planning}
+\section{The Traveling Salesman Problem}
 Given a finite number of cities along with the cost of travel between each pair of them, the goal is to find the cheapest way of visiting all the cities exactly once and returning to your starting point. Usually the travel costs are symmetric. A tour that passes through all the vertices (cities) is called a Hamiltonian cycle. The goal is to find the shortest Hameltonian cylce.
-\subsubsection{Problem Statement and Solution Methodology}
+\subsection{Problem Statement and Solution Methodology}
 \subsubsubsection{Definition of the TSP}
 The aim is to find the optimal tour $s^* \in S$ such that $f(s^*) \leq f(s_k) \forall s_k \in S$.\\*
 $[d_{ij}]$ is the distance matrix. If there is no edge between $i$ and $j$, then the distance is set to $\infty$. If $\pi_k(i)$ represents the city visited next after city $i$, the total distance function becomes\\*
@@ -495,7 +495,7 @@ $x_{ij} \geq 0; \forall i,j \in \{1, \dots, n\}$\\
 These constraints simply mean that each city has exaclty one successor and one predecessor.
 It is possible that two or more subcycles exist, which does not specify a valid TSP.\\*
 The solution space can be restricted by giving more constraints.
-\subsubsection{Review of Approximation Algorithms and Heuristics}
+\subsection{Review of Approximation Algorithms and Heuristics}
 \subsubsubsection{Nearest Neighbor Heuristics}
 It considers a city as its starting point and takes the nearest city in order to build up the Hamiltonian cycle. See for figure 8.1, page 126 for the drawback of this heuristic.
 \subsubsubsection{Partitioning Heuristics}
@@ -513,7 +513,7 @@ The probability to obtain a global optimal solution, is about $2^{-\frac{n}{10}}
 \subsubsubsection{The $k$-opt Method}
 Cfr.\\*
 A $k$-optimal solution is a global solution if $k = n$.
-\subsubsection{Multiple Traveling Salesman Problems}
+\subsection{Multiple Traveling Salesman Problems}
 A set of salesman will try to do the job, each serving a subset of the cities involved. One city has to be the depot, representing the start and end point of all routes. There are two definitions for the MTSP:
 \begin{itemize}
 \item Bellmore's definition: Find exactly $m$ tours.
@@ -521,7 +521,7 @@ A set of salesman will try to do the job, each serving a subset of the cities in
 \end{itemize}
 The depot has to be visited in all tours.\\*
 Notice that in the second definition, the solution will be a single tour (because of the triangle inequality). More constraints are needed.
-\subsubsection{Genetic Algorithm Approaches}
+\subsection{Genetic Algorithm Approaches}
 \subsubsubsection{Problem Representations and Operators}
 \paragraph{Adjacency Representation}
 A tour is represented as a list of $n$ cities where $j$ is listed in position $i$ if and only if the tour leads from city $i$ to city $j$. For example:\\*
@@ -570,31 +570,31 @@ The $2$-change and $3$-change mutation technique have been shown to be very effe
 \clearpage
 
 \appendix
-\section{Evolving Inventions}
+\chapter{Evolving Inventions}
 In the field of electronics, genetic programming has duplicated 15 previously patented inventions.
 
 The first practical commercial area for genetic programming will probably be design. Design is especially well suited to genetic programming because it presents tough problems for which people seek solutions that are very good but not mathematically perfect. We frequently see creative things come out of the evolutionary process that would never occur to human designers.
 
-\subsection{Out of the Primordial Ooze}
+\section{Out of the Primordial Ooze}
 Example of the low-pass filter. Start embryonic. Apply progressive application of circuit-constructing functions. Other examples are antennas and (cruise/PID) controllers.
 
-\subsection{Evolvable Hardware}
+\section{Evolvable Hardware}
 Rapidly reconfigurable field-programmable gate arrays. Each cell is programmable and also the interconnections are programmable by changing the configuration bits.
 
-\subsection{Run Times}
+\section{Run Times}
 Use a mass amount of low-grade computers to simulate semi-isolated subpopulations.
 
-\subsection{Passing an Intelligence Test}
+\section{Passing an Intelligence Test}
 The patent office receives written descriptions of inventions and then judges whether they are unovbvious to a person having ordinary skill in the relevant field. Whenever an automated method duplicates a previously patented  human-designed invention, the automated method has passed the patent office's intelligence test. The fact that the original, human-designed version satisfied the patent office's criteria means that the computer-created duplicate would also have satisfied the patent office.
 \clearpage
 
-\section{Using Genetic Algorithms For Supervised Concept Learning}
+\chapter{Using Genetic Algorithms For Supervised Concept Learning}
 A GA concept learner (GABL) is implemented that learns a concept from a set of positive and negative examples.
 
-\subsection{Introduction}
+\section{Introduction}
 The focus of this paper is to illustrate that GAs are more general and can be effectively applied to more traditional symbolic learning tasks as well.
 
-\subsection{Supervised Concept Learning Problems}
+\section{Supervised Concept Learning Problems}
 A concept learning program is presented with both a description of the feature space and a set of correctly classified examples of the concepts, and is expected to generate a reasonably accurate description of the (unknown) concepts. An important issue is the choice of the concept description language. The language must have sufficient expressive power to describe large subsets succinctly and yet be able to capture irregularities. The two language forms generally used are decision trees and rules.
 
 Another important issue arises from the problem that there is a large set of concept descriptions which are consistent with any particular finite set of examples. This is generally resolved  by introducing either explicitly or implicitly a bias for certain kinds of descriptions (e.g. shorter or less complex descriptions may be preferred).
@@ -603,14 +603,14 @@ Finally, there is the difficult issue of evaluating and comparing the performanc
 
 The alternative evaluation approach is an incremental mode in which the concept learner is required to produce a concept description from the examples seen so far and to use that description to classify the next incoming example. In this mode learning never stops.
 
-\subsection{Genetic Algorithms and Concept Learning}
+\section{Genetic Algorithms and Concept Learning}
 
-\subsubsection{Representing the Search Space}
+\subsection{Representing the Search Space}
 The traditional internal representation used by GAs involves using fixed-length strings to represent points in the space to be searched. This representation works well for parameter optimization, but not for concept descriptions which are generally symbolic in nature.
 
 One can either change the fundamental GA operators to work effectively with complex non-string objects or one can attempt to construct a string representation which minimizes any changes to the GAs. Both approaches are interesting. The second approach will be discussed now, the first approach at the end of this paper.
 
-\subsubsection{Defining Fixed-length Classifier Rules}
+\subsection{Defining Fixed-length Classifier Rules}
 A natural way to express complex concepts is as a disjunctive set of classification rules. The left-hand side of each rule consists of a conjunction of one or more tests involving feature values. The right-hand side of a rule indicates the classification to be assigned.
 
 By restricting the complexity of the elements of the conjunctions, we are able to use a string representation and standard GAs, with the only negative side effect that more rules may be required to express the concept. This is achieved by restricting each element of a conjunction to be a test of the form:
@@ -625,33 +625,33 @@ if (F2 = large) and (F5 = tall or thin) then it's a widget
 \end{center}
 With these restrictions we can now construct a fixed-length internal representation for classifier rules. Each fixed-length rule will have $N$ feature tests, one for each feature. Each feature test will be represented by a fixed length binary string, the length of which will depend of the type of feature. E.g. F1 = 0111110 for the days of the week.
 
-\subsubsection{Evolving Sets of Classifier Rules}
+\subsection{Evolving Sets of Classifier Rules}
 Two strategies: Michigan and Pittsburgh.\\
 Michigan: A population of individual rules which compete with each other for space and priority in the population. Pittsburgh: Maintain a population of variable-length rule sets which compete with each other with respect to performance on the domain task. In this paper, the Pittsburgh approach will be evaluated. The number of rules in one individual is unrestricted.
 
 Crossover can occur anywhere. The only requirement is that the corresponding crossover points on the two parents match up semantically.
 
-\subsubsection{Choosing a Payoff Function}
+\subsection{Choosing a Payoff Function}
 \begin{center}
 $payoff\ (individual\ i) = (percent\ correct)^2$
 \end{center}
 
-\subsubsection{The GA Concept Learner}
+\subsection{The GA Concept Learner}
 Given the representation and payoff function described above, a standard GA can be used to evolve concept descriptions in several ways. The simplest approach involves using a batch mode in which a fixed set of examples is presented, and the GA must search the space of variable-length strings described above for a set of rules which achieves a score of $100\%$. We will call this approach GABL (GA Batch concept Learner).
 
 The search terminates as soon as a $100\%$ correct rule set is found within a user-specified upper bound on the number of generations. If a correct rule set is not found within the specified bounds or if the population loses diversity, the GA simply returns the best rule set found.
 
 The simplest way to produce an incremental GA concept learner is to use GABL incrementally in the following way. The concept learner initially accepts a single example from a pool of examples. GABL is used to create a $100\%$ correct rule set for this example. This rule set is used to predict the classification of the next example. If the prediction is incorrect, GABL is invoked to evolve a new rule set using the two examples. If the prediction is correct, the example is simply stored with the previous example and the rule set remains unchanged. As each new additional instance is accepted, a prediction is made, and the GA is re-run in batch if the prediction is incorrect. We refer to this mode of operation as batch-incremental and we refer to the GA batch-incremental concept learner as GABIL.
 
-\subsection{Empirical Studies}
-\subsubsection{Evaluating Concept Learning Programs}
+\section{Empirical Studies}
+\subsection{Evaluating Concept Learning Programs}
 We prefer the use of learning curves which measure the change in a system's performance over time in a possibly changing environment.
 
 We are interested in examining how an incremental system changes its predicticve performance over time. Instead of computing the overall performance (batch mode), we examine a small window of recent outcomes.
 
-\subsubsection{Implementation Details}
+\subsection{Implementation Details}
 
-\subsubsection{Initial Experiments}
+\subsection{Initial Experiments}
 In addition to studying the behavior of our GA-based concept learner (GABIL) as a function of increasing complexity, we were also interested in comparing its performance with an existing algorithm. ID5R uses decision trees as the description language and always produces a decision tree consistent with the instances seen.
 
 As the number of disjuncts and/or conjuncts increases, individual features become less informative, resulting in larger decision trees and poorer predictive performance. ID5R's information theoretic biases will therefore perform better on simpler target concepts.
@@ -662,19 +662,19 @@ Recall that each point on a curve represents the percent correct achieved over t
 
 In ID5R, each negative example is represented by a unique leaf node in the decision tree. For this reason, ID5R cannot generalize over the negative examples, and has a good chance of predicting any negave example incorrectly. Even positive examples are not generalized well. It is clear that the decision tree representation is poor for representing this particular concept since the syntactic complexity of a terget concept corresponds roughly with the size of its decision tree representation.
 
-\subsection{Further Analysis and Comparisons}
+\section{Further Analysis and Comparisons}
 
-\subsection{Conclusions}
+\section{Conclusions}
 \clearpage
 
-\section{A Knowledge-Intensive Genetic Algorithm for Supervised Learning}
+\chapter{A Knowledge-Intensive Genetic Algorithm for Supervised Learning}
 
-\subsection{Introduction}
+\section{Introduction}
 Statistical models: The only representation is by means of all stored examples or some statistics on them. Connectionist models: The knowledge is distributed among network connections and an activation method.
 
-\subsection{Genetic algorithms}
+\section{Genetic algorithms}
 
-\subsection{Inductive learning from examples}
+\section{Inductive learning from examples}
 When the objects are described by features (attribute-value pairs) based on a number of multi-values attributes, the learning is said to be in an attribute-based space. A priori knowledge consists of a set of events that are examples of the space. When each such event is preclassified as belonging to a category, the learning is said to be supervised. The task is to generalize the a priori knowledge in order to produce descriptions of the concepts. When a rule-based framework is used to express the descriptions, the acquired knowledge is often called decision rules.
 
 A decision tree can naturally produce complete and consistent partitions of the search space. On the other hand, it is more difficult for a set of rules to cover the search space in the same manner. Therefore, an extra mechanism is needed to account for possible cases of no-match and multiple-match when recognizing new events. Such problems can be avoided while learning single concepts if the system learns only the concept description and assumes that the subspace not covered by this description represents the complement of the concept.
@@ -690,36 +690,36 @@ There are two different approaches to learning from examples: full memory learni
 
 The system should possess incremental learning capabilities.
 
-\subsection{Previous approaches}
-\subsubsection{Traditional approaches}
+\section{Previous approaches}
+\subsection{Traditional approaches}
 Statistical approaches account for the vast majority of non-symbolic, or numerical, approaches. They usually operate in batch mode on the data set in order to obtain some statistical measures, which are later used as probabilistic approximations of appearances of different features.
 
 Another numerical approach comes from the neural network community.
 
-\subsubsection{Genetec algorithm approaches}
+\subsection{Genetec algorithm approaches}
 \begin{itemize}
 \item \textbf{Michigan}
 \item \textbf{Pittsburgh}
 \end{itemize}
 
-\subsection{The modified genetic algorithm}
+\section{The modified genetic algorithm}
 The actual start of the paper.
 
-\subsubsection{Ideas used}
+\subsection{Ideas used}
 There is a whole spectrum of possible GA designs along the dimension of task-specific knowledge utilization. On one side of the spectrum lies a method that only uses the classical operators of mutation and crossover. On the other side of the spectrum lies a knowledge-intensive method that completely abandons the traditional domain-independent operators, and instead, fully implements the specific problem-solving methodology.
 
 Even though the last approach does not have the same theoretical support, it is backed by the task-specific knowledge used to guide and conduct the search. This property should provide for a faster convergence to a desired solution. Moreover, it may be easily shown that all the operators we subsequently define and use are actually special cases of the traditional mutation and crossover. This provides and intuitive support for the same theoretical foundations.
 
 While applications of the traditional domain-independent operators provide for a domain-independent search conducted in the artificial representation space, we set the genetic algorithm to operate directly in the problem space by organizing the work there.
 
-\subsubsection{Representation and search space}
+\subsection{Representation and search space}
 We adopt the multiple-valued logic language $VL_1$ as the choise for the chromosome's representation. Then the search space is the space of sets of rules, spanned by given features. This is the space of $VL_1$ concept descriptions. Because we do not employ any extra axioms, it is quite feasible and possible to have redundant descriptions, such as
 \begin{center}
 $[Age > Young] ::> HeartRiskGroup$, $[Age = Old] ::> HeartRiskGroup$
 \end{center}
 For simplicity of presentation, from now on we only consider $VL_1$ formulas built using the sufficient '=' relation with internal disjunctions.
 
-\subsubsection{Initial population}
+\subsection{Initial population}
 We allow for three different types of chromosomes to fill the population initially:
 \begin{itemize}
 \item Random initialization. Each individual is a set of a random number of complexes, randomly generated on the search space.
@@ -728,7 +728,7 @@ We allow for three different types of chromosomes to fill the population initial
 \end{itemize}
 The best avarage behavior is obtained while using a combination of these three.
 
-\subsubsection{Evaluation mechanism}
+\subsection{Evaluation mechanism}
 \label{sec:evaluation}
 In supervised learning from examples, the criteria include completeness, consistency and possibly complexity. One may wish to accommodate some additional criteria, such as cost of attributes, length of descriptions, their generality, \dots, but we did not consider them in the current implementation.
 
@@ -744,7 +744,7 @@ where $w_3$ determines the influence of $cost$ and $f$ grows very slowly on $[0,
 
 Initial experiments suggest that the system performs better when the $f$ exponent somehow fluctuates, and that the final increase should start based upon an anticipated exhaustion of resources or when the currently learned description is already complete and consistent.
 
-\subsubsection{Operators}
+\subsection{Operators}
 \subsubsubsection{Rule set level}
 This is the level of sets of $VL_1$ complexes.
 \begin{itemize}
@@ -801,32 +801,32 @@ This is the level of $VL_1$ selectors.
 \subsubsubsection{Operator selection probability}
 Chinese.
 
-\subsubsection{Algorithm}
+\subsection{Algorithm}
 The algorithm uses the above components and the control of genetic algorithms. At each iteration, all rule sets of the population are evaluated and a new population is formed by drawing members from the original one in such a way that more fit individuals have a higher chance of being selected. Following that, the operators are applied to population members in order to move these partial solutions, hopefully, closer to the desired state.
 
-\subsection{Some implementation issues}
+\section{Some implementation issues}
 Genetic-Based Inductive Learning (GIL).
 
-\subsubsection{Sampling mechanism}
+\subsection{Sampling mechanism}
 We use the stochastic universal sampling mechanism.
 
-\subsubsection{Internal representation}
+\subsection{Internal representation}
 For example, assuming that an attribute has five domain values, the binary vector 11001 represents the condition saying that the attribute must have the first, second or the last value.
 
 A complex is represented by a vector of conditions. See the example on page 210.
 
-\subsubsection{Data compilation}
+\subsection{Data compilation}
 Prior to learning all data are precompiled into vectors, like in table 3, page 211.
 
 To compute the result of a 'rules copy' operator, only a bitwise OR has to by applied.
 
-\subsection{Experimental studies}
-\subsubsection{Experimental methodology}
+\section{Experimental studies}
+\subsection{Experimental methodology}
 Split the available events into training and testing groups (70/30).
 
 The formula in section \ref{sec:evaluation} can be used for qualitative properties (comprehensibility).
 
-\subsubsection{Emerald's robot world}
+\subsection{Emerald's robot world}
 See a summary of the world on page 213.
 
 \subsubsubsection{The trace}
@@ -835,23 +835,23 @@ See a summary of the world on page 213.
 \subsubsubsection{Comparative experiments}
 GIL produced the highest recognition rate, especially when seeing only a small percentage of the events. This result can be attributed to the simplicity-biased evaluation formula that was used.
 
-\subsubsection{DNF concepts}
+\subsection{DNF concepts}
 GIL achieves very high performance for all kinds of problems. It outperforms GABIL in terms of learning variability.
 
-\subsubsection{Multiplexers}
+\subsection{Multiplexers}
 \dots
 
-\subsubsection{Breast cancer}
+\subsection{Breast cancer}
 \dots
 
-\subsubsection{Incremental learning}
+\subsection{Incremental learning}
 It's interesting to note that there was no significant difference in the quantitative performance, suggesting GIL can be used in incremental environments. Moreover, observed faster convergence in the incremental mode suggests that the reused knowledge in forms of the initial population was processed very usefully, indicating the system's ability to process initial hypotheses and maintain knowledge in a dynamic environment.
 
-\subsection{Conclusions and further research}
-\subsubsection{Multiple domains}
+\section{Conclusions and further research}
+\subsection{Multiple domains}
 If we assume independence of different class descriptions, we may apply subsequent learning settings of the same algorithm, one session per class. Then, during a learning session for class $n$, the examples of category $n$ are considered as positive events, while the examples of all other categories are considered as the current negative events. The same idea may be used differently: we may conduct the learning sessions simultaneously in different populations, with one population assigned to one class being learned.
 
-\subsubsection{Other issues}
+\subsection{Other issues}
 One of the major disadvantages of the current implementation is its high parameterization: there are about 40 input parameters that must be specified, with most of them being continuous probability values. This is the reason for the poorer performance noticed on more complex problems.
 
 All these parameters could be replaced by few conceptual ones. Such an abstraction would provide for both easier use and more efficient performance. Some recent results show that adjusting the bias (non-probabilistic parameters) appropriately can improve both the speed and the quality of learning.
@@ -859,11 +859,11 @@ All these parameters could be replaced by few conceptual ones. Such an abstracti
 Our simplified approach assumes a crisp concept representation with rule-based conceptualization and is not well suited for dealing with noise.
 \clearpage
 
-\section{Evolving 3D Morphology and Behavior by Competition}
-\subsection{Introduction}
+\chapter{Evolving 3D Morphology and Behavior by Competition}
+\section{Introduction}
 Gezever.
 
-\subsection{The Contest}
+\section{The Contest}
 See figure 1, page 29 for the set up. Creatures are wedged into these 'starting zones' until they contact both the ground plane and the diagonal plane, so taller creatures must start further back.
 
 A creature gets a higher score by being closer to the cube but also gets a higher score when its opponent is further away. The fitness for each creature is given by
@@ -871,7 +871,7 @@ A creature gets a higher score by being closer to the cube but also gets a highe
 $f_i = 1 + \cfrac{d_j - d_i}{d_i + d_j}$
 \end{center}
 
-\subsection{Approximating Competitive Environments}
+\section{Approximating Competitive Environments}
 In the most extreme case, each individual competes with all the others in the population and the average score determines the fitness. This requires $(n-1)n/2$ competitions.
 
 A compromise is for each individual to compete against several opponents chosen at random for each generation.
@@ -880,13 +880,13 @@ An other compromise is a tournament pattern (See figure 2c, page 30).
 
 A third compromise is for each individual to compete once per generation, but all against the same opponent. This gives a fair relative fitness value since all are playing against the same opponent which has proven to be competent.
 
-\subsection{Creature Morphology}
+\section{Creature Morphology}
 A phenotype hierarchy of parts is made from a graph by starting at a defined root-node and synthesizing parts from the node information while tracing through the connections of the graph. Nodes can connect to themselves or in cycles to form recursive or fractal like structures. See figure 3, page 31.
 
-\subsection{Creature behavior}
+\section{Creature behavior}
 A virtual 'brain' determines the behavior of a creature. See figure 4, page 32.
 
-\subsubsection{Sensors}
+\subsection{Sensors}
 Each sensor is contained within a specific part of the body. Three types of sensors were used:
 \begin{itemize}
 \item \textit{Joint angle sensors} give the current value for each degreee of freedom of each joint.
@@ -894,30 +894,30 @@ Each sensor is contained within a specific part of the body. Three types of sens
 \item \textit{Photosensors} react to a global light source position. The source of one color is located in the desirable cube, and the other is located at the center of mass of the opponent.
 \end{itemize}
 
-\subsubsection{Neurons}
+\subsection{Neurons}
 In this work, different neural nodes can perform diverse functions on their inputs to generate their output signals.
 
 Some functions compute an output directly from their inputs, while others such as the oscillators retain some state and give time varying outputs even when their inputs are constant.
 
 In this work, two brain time steps are performed for each dynamic simulation time step so signals can propagate through multiple neurons with less delay.
 
-\subsubsection{Effectors}
+\subsection{Effectors}
 Each effector simply contains a connection from a neuron or a sensor from which to receive a value. This input value is scaled by a constant weight, and then exerted as a joint force which affects the dynamic simulation and the resulting behavior of the creature. Only effectors that exert simulated muscle forces are used here.
 
-\subsubsection{Combining Morphology and Control}
+\subsection{Combining Morphology and Control}
 See figure 5, page 33 for an example of how morphology (the physical form of the creature) can be combined with the nueral circuit.
 
-\subsection{Physical Simulation}
+\section{Physical Simulation}
 \dots
 
-\subsection{Creature Evolution}
+\section{Creature Evolution}
 Seed genotypes are synthesized 'from scratch' by random generation of sets of nodes and connections.
 
 Before creatures are paired off for competitions and fitness evaluation, some simple viability checks are performed, and inappropriate ceratures are removed from the population by giving them zero fitness values. Those that have more than a specified number of parts are removed.
 
 The number of offspring that each surviving individual generates is proportional to its fitness.
 
-\subsubsection{Mutating Directed Graphs}
+\subsection{Mutating Directed Graphs}
 A directed graph is mutated by the following sequence of steps:
 \begin{enumerate}
 \item Boolean values are flipped, scalar values are increased/decreased Gaussian-like or negated. Sometimes a random value is picked.
@@ -927,39 +927,39 @@ A directed graph is mutated by the following sequence of steps:
 \item Unconnected elements are garbage collected.
 \end{enumerate}
 
-\subsubsection{Mating Directed Graphs}
+\subsection{Mating Directed Graphs}
 The first is a crossover operation. See figure 7a, page 35.
 
 A second mating method grafts two genotypes together by connecting a node of one parent to a node of another parent. See figure 7b, page 35.
 
-\subsubsection{Parallel Implementation}
+\subsection{Parallel Implementation}
 This process has been implemented to run in parallel on a Connection Machine CM-5 in a master/slave message passing model.
 
-\subsection{Results and Discussion}
+\section{Results and Discussion}
 See figure 8, page 36. Some species took many generations before they could even reach the cube at all, while others discovered a fairly successful strategy in the first 10 or 20 generations.
 
 After the results from many simulations were observed, the best were collected and then played against each other in additional competitions. The different strategies were compared, and the behavior and adaptability of creatures were observed as they faced new types of opponents that were not encountered during their evolutions.
 
 It is possible that adaptation of an evolutionary scale occurred more easily than the evolution of individuals that were themselves adaptive. Perhaps individuals with adaptive behavior would be significantly more rewarded if evolutions were performed with many species instead of just one or two. To be successful, a single individual would then need to defeat a larger number of different opposing strategies.
 
-\subsection{Future Work}
+\section{Future Work}
 \dots
 
-\subsection{Conclusion}
+\section{Conclusion}
 \dots
 \clearpage
 
-\section{Optimization of Control Parameters for Genetic Algorithms}
-\subsection{Introduction}
+\chapter{Optimization of Control Parameters for Genetic Algorithms}
+\section{Introduction}
 The problem of tuning the primary algorithm represents a secondary, or metalevel, optimization problem. See figure 2, page 123 for a representation.
 
-\subsection{Overview of Genetic Algorithms}
+\section{Overview of Genetic Algorithms}
 We desire to optimize a process having a response surface $u$, which depends on some input vector $x$.
 
-\subsection{Experimental Design}
+\section{Experimental Design}
 These experiments were designed to search the space of GA's defined by six control parameters, and to identify the optimal parameter settings with respect to two different performance measures. The search for the optimal GA's were performed by GA's, which demonstrates the efficiency and power of GA's as metalevel optimization techniques.
 
-\subsubsection{The Space of Genetic Algorithms}
+\subsection{The Space of Genetic Algorithms}
 This study is limited to a particular subclass of GA's characterized by the following six parameters:
 \begin{itemize}
 \item \textit{Population Size (N)}: Large populations are more likely to contain representatives from a large number of hyperplanes. As a result, a large population discourages premature convergence.
@@ -971,52 +971,52 @@ This study is limited to a particular subclass of GA's characterized by the foll
 \end{itemize}
 These six parameters defines a space of $2^{18}$ GAs, so each GA is defined by a 18-bit vector.
 
-\subsubsection{Task Environment}
+\subsection{Task Environment}
 Each GA was evaluated by using it to perform five optimizaiton tasks, one for each of five carefully selected numerical test functions.
 
-\subsubsection{Performance Measures}
+\subsection{Performance Measures}
 \textit{Online performance} of a search strategy $s$ and a response surface $e$: $U_e(s,T) = ave_t(u_e(t))$, where $u_e(t)$ is the performance of the structure evaluated at time $t$. Online performance is the average performance of all tested structures over the course of the search.\\
 \textit{Offline performance}: $U_e^*(s,T) = ave_t(u_e^*(t))$ where $u_e^*(t)$ is the best performance achieved in the time interval $[0,t]$. Offline performance is preffered if it is possible (e.g. simulation), while the best structure so far is used to control the online system.
 
-\subsubsection{Experimental Procedures}
+\subsection{Experimental Procedures}
 Two experiments were performed, one to optimize online performance and one to optimize offline performance.
 \begin{enumerate}
 \item The metalevel GA started with a population of 50 randomly chosen GAs and used a standard parameter setting.
 \item The GAs showing the best performances during step 1 are subjected to more extensive testing. Each of the 20 best GAs in step 1 was again run against the task environment, this time for five trails for each test function, using different random number seeds for each trail. The GA which exhibited the best performance in this step was declared the winner of the experiment.
 \end{enumerate}
 
-\subsection{Results}
-\subsubsection{Experiment 1 - Online Performance}
+\section{Results}
+\subsection{Experiment 1 - Online Performance}
 The first experiment was designed to search for the optimal GA with respect to online performance on the task environment. Figure 4, page 126 shows the average online performance for the 50 GAs in each of the 20 generations of experiment 1.
 
-\subsubsection{Experiment 2 - Offline Performance}
+\subsection{Experiment 2 - Offline Performance}
 The second experiment was designesd to search for the optimal GA with respect to offline performance on the task environment. Figure 5, page 126 shows the average offline performance of random search (100). This finding verifies the experience of many practitioners that GAs can prematurely converge to suboptimal solutions when given the wrong control parameters.
 
-\subsubsection{General Observations}
+\subsection{General Observations}
 Mutation rates above 0.05 are generally harmful with respect to online performance. The absence of mutation is also associated with poorer performance. Population size: 30-100, 60-110 for offline performance.
 
 In smaller populations crossover plays an important role in preventing premature convergence.
 
-\subsection{Validation}
+\section{Validation}
 To validate the experimental results, the three algorithms $GA_S$, $GA_1$ and $GA_2$ were applied to an optimization problem which was not included in the experimental task evironment.
 
-\subsection{Conclusion}
+\section{Conclusion}
 \dots
 \clearpage
 
-\section{Successful Lecture Timetabling with Evolutionary Algorithms}
-\subsection{Introduction}
+\chapter{Successful Lecture Timetabling with Evolutionary Algorithms}
+\section{Introduction}
 The most prominent overall constraint is that there should be no clashes.
 
 Typically this is addressed by drawing up an initial draft timetable, followed by perhaps weeks of redrafting as complaints about the most recent draft flow in from various sources.
 
-\subsection{Lecture Timetabling Problems}
+\section{Lecture Timetabling Problems}
 A set of events $E = \{e_1, e_2, \dots, e_v\}$, agents (lecturers) $A = \{a_1, a_2, \dots, a_t\}$, places $P = \{p_1, p_2, \dots, p_q\}$ and a set of times $T = \{t_1, t_2, \dots, t_s\}$. Each event $e_i$ has an associated length $l_i$ and an associated size $s_i$, which is either known or an estimate of the number of students expected to attend that event. Tuples of $(e, t, p, a)$ have to be found.
 
-\subsection{Evolutionary Timetabling}
+\section{Evolutionary Timetabling}
 The timetable chromosome is a vector of symbols of total length $3v$. The three alleles in the $i$th chunk represent time (t), place (p) and agent (a).
 
-\subsubsection{The Fitness Function}
+\subsection{The Fitness Function}
 \begin{center}
 $f(g) = 1/(1 + \sum_{i \in C} P_i v_i(g))$
 \end{center}
@@ -1024,7 +1024,7 @@ $C$ is the set of constraints in the problem.\\*
 $P_i$ is a penalty associated with constraint $i$.\\*
 $v_i(g) = 1$ if timetable $g$ violates constraint $i$ and 0 otherwise.
 
-\subsection{A Specific Lecture Timetabling Problem}
+\section{A Specific Lecture Timetabling Problem}
 $T$ comprises 80 start times, 16 per day. Each day's slots are at half-hourly intervals from 9h to 16h30. $E$ comprises a large collection of lectures, tutorials, and lab sessions, mostly an hour long, but sometimes two hours long. \dots\\
 Constraints:
 \begin{itemize}
@@ -1040,12 +1040,12 @@ Constraints:
 \end{itemize}
 In this case, we don't need to consider the set $A$.
 
-\subsubsection{Keeping Options Open}
+\subsection{Keeping Options Open}
 Make sure that there is no overlapping between courses for the same student. All other overlapping is allowed.
 
 This amounts to a collection of binary constraints of the form "$e_1$ must not overlap in time with $e_2$.".
 
-\subsubsection{Event Spread contraints}
+\subsection{Event Spread contraints}
 Calculate the spread of every student or the whole timetable.
 
 The number of instances of the following two offences:
@@ -1057,38 +1057,38 @@ A different penalty term is associated with each and the penalty weighted sum of
 
 Also, a penalty is added when a pair of lectures of the same module is assigned on the same day.
 
-\subsubsection{Exclusions and Specifications}
+\subsection{Exclusions and Specifications}
 Pre-arrangement can be used.
 
 Sometimes, a timetable may violate a single constraint, but make it up for this in being excellent overall.
 
-\subsubsection{Capacity Constraints}
+\subsection{Capacity Constraints}
 \dots
 
-\subsubsection{Juxtaposition Constraints}
+\subsection{Juxtaposition Constraints}
 'lisp\_1 must be before lisp\_t3.'
 
-\subsection{Experiments}
+\section{Experiments}
 The EA used a population size of 50, uniform crossover, gene-by-gene mutation, and elitist generational reproduction. Each generation consisted of 50 evaluations. Each trail was run for 200 generations.
 
 Ten trails were run for each experiment and results for each problem record for the best $V$ (= vector of violations) found overall and the mean of $V$ over the ten trails for each of the three selection schemes.
 
-\subsubsection{Results}
+\subsection{Results}
 The course organisers did a horrible job. TOUR did an awesome job with just a few or even no violations. \textgreater\ FIT \textgreater\ RANK.
 
-\subsection{Discussion}
+\section{Discussion}
 The results clearly indicate the benefits of using a penalty-function based on EA approach on this problem.
 
-\subsubsection{Scaling up}
+\subsection{Scaling up}
 Hard to say. Solutions near optimal regions are rapidly found on large complex problems, but further evolution towards optima becomes considerably slow and may stop altogether. Fortunately, this difficulty is readily aided by the use of smart hillclimbing mutation operators.
 
-\subsubsection{Generalising Across}
+\subsection{Generalising Across}
 As long as the number of constraints and the computational ease of checking them make for a relatively speedy evaluation function, which is usually the case when using the direct chromosome representation.
 
-\subsubsection{Different Approaches}
+\subsection{Different Approaches}
 Different representations, use of domain specific recombination operators and hybridisation of the EA (evolutionary algorithms) with other techniques are all candidates for refinement.
 
-\subsubsection{Practice}
+\subsection{Practice}
 \dots
 
 \end{document}
