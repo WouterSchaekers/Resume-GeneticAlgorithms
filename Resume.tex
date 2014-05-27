@@ -91,7 +91,7 @@ The term chromosome refers to a solution candidate.
 According to the fitness, individuals are chosen for the production of offspring. There are many ways of accomplishing this:
 \begin{itemize}
 \item Proportional selection (the roulette wheel): Each individual receives a proportional chance of being chosen (fitness/total fitness). Method can easily be programmed by calculating the cumulative chance (which is 1 for the last individual) and then generate a random number between $0$ and $1$.
-\item Linear-rank selection: The best individual receives $x$ times more chance of being chosen than the worst individual. $x$ is pre-determined. This 'flattens out' the differences between the fitness values. Each individual has at least one representation (even if the fitness is $0.00\dots1$).
+\item Linear-rank selection: The best individual receives $x$ times more chance of being chosen than the worst individual. $x$ is pre-determined. This 'flattens out' the differences between the fitness values. Each individual has at least a chance of getting selected (even if the fitness is $\ll1$).
 \item Tournament selection: The most common variant is $k$-tournament, where $k$ individuals are picked. The fittest individual is then chosen.
 \end{itemize}
 \subsection{Recombination (Crossover)}
@@ -106,14 +106,14 @@ Mutation takes the form of replacing an allele with a randomly chosen value in t
 In this subsubsection, we will discuss the way a new offspring should become members of the next generation.
 \begin{itemize}
 \item Generational Replacement: The entire population is replaced.
-\item Elitism: The bst individual of the previous generation are retained for the next generation. This strategy is commonly applied and is called the 'golden cage model'. If mutation is applied to the elite, it is called 'weak elitism'. All methods to lower the amount of elitism, will usually cause less convergence.
+\item Elitism: The best individual of the previous generation are retained for the next generation. This strategy is commonly applied and is called the 'golden cage model'. If mutation is applied to the elite, it is called 'weak elitism'. All methods to lower the amount of elitism, will usually cause less convergence.
 \item Delete-n-last: Replace the $n$ weakest individuals.
 \item Delete-n: Replace $n$ random individuals.
 \item Tournament Replacement: Competitions are run between sets of individuals from the last and the actual generation, with the winners becoming part of the new population.
 \end{itemize}
 \section{Problem Representation}
 \subsection{Binary Representation}
-Chromosomes can be in binary representation. An example of a binary representation is the Traveling Salesman Problem, where each city is represented as $log_2(n)$ bits. A chromosome has a length of $nlog_2(n)$. There is also an alternative representation where a matrix is used ($1$ if city $i$ is visited after city $j$, $0$ otherwise). Because the offspring may be illegal, repair strategies must be used. These can lead to offspring that has not much in comon with the parents, something that counteracts the general functioning of GAs.
+Chromosomes can be in binary representation. For instance we can represent the Traveling Salesman Problem in the following way: each city is represented as $log_2(n)$ bits. A chromosome has a length of $nlog_2(n)$. There is also an alternative representation where a matrix is used ($1$ if city $i$ is visited after city $j$, $0$ otherwise). Because the offspring may be illegal, repair strategies must be used. These can lead to offspring that has not much in common with the parents, something that counteracts the general functioning of GAs.
 \subsection{Adjecency Representation}
 The adjecency representation of a city is the following. If a tour in the TSP leads from city $i$ to city $j$, $j$ is listed on position $i$. To produce offspring, one can use alternating edges crossover. This means that an edge from one parent is chosen from the first location. Then this new city is the new location. The city in this location from the other parent is chosen. This goes on until all cities are chosen. If a city is chosen twice, this means that there is a cycle. A random other city must then be chosen.\\
 The advantage is the fact that the child is build up with edges from its parents. The disadvantage is the fact that the child does not inherit longer tour segments.
@@ -145,7 +145,7 @@ Parallel genetic algorithms can be classified as global parallelization or coars
 In global parallelization, there is a master and many slaves. The master gives a part of the population to the slaves, while the slaves return the fitness value of the subset they have received.\\*
 This only works for populations that are panmictic, where all individuals are possible mating partners.
 \subsection{Coarse-Grained Parallel GAs}
-Here, the population is divided into multiple subpopulations (so called islands or demes) that evolve isolated from each other, exept for an occasionally 'migration'. See figure 1.4, page 19 for the ones who like pictures. The qualitative performance is influenced by the number and size of the demes and also by the amount of migrations.\\
+Here, the population is divided into multiple subpopulations (so called islands or demes) that evolve isolated from each other, except for an occasionally 'migration'. See figure 1.4, page 19 for the ones who like pictures. The qualitative performance is influenced by the number and size of the demes and also by the amount of migrations.\\
 Relatively isolated demes will converge to different regions of the solution-space, and migration and recombination will combine these.\\ The only example is the SASEGASA algorithm (see chapter 5).
 \subsection{Fine-Grained Parallel GAs}
 The basic idea behind this model is that the individuals are spread throughout the global population like molecules in a diffusion process. Diffusion models are also called cellular models. In the diffusion model, a processor is assigned to each individual and recombination is restricted to the local neighborhood of each individual. This diffusion model is a sort of fine-grained parallel GA.\\*
@@ -159,7 +159,7 @@ Important parameters for migration are:
 \item The migration rate.
 \item The migration frequency.
 \end{itemize}
-Synchronous migration (constant intervals) is usefull for parallel GAs, but has shown to be slow and inefficient in some cases. Asynchronous migration only happend after specific events.\\
+Synchronous migration (constant intervals) is useful for parallel GAs, but has shown to be slow and inefficient in some cases. Asynchronous migration only happened after specific events.\\
 Self-adaptive selection pressure steering can detect local premature convergence (in a certain deme). This can be very efficient for parallel implementations. The fact that selection pressure is adjusted self-adaptively, makes (parallel) GAs more independent in terms of migration parameters.
 \section{The Interplay of Genetic Operators}
 Because of crossover, a breadth search will happen.\\*
@@ -179,7 +179,7 @@ Similar to the GA, GP is an evolutionary algorithm inspired by biological evolut
 \item Terminals are evaluated directly, i.e., their return values can be calculated and returned immediately.
 \item All functions have child nodes which are evaluated before using the children's calculated return values as inputs for the parents' evaluation.
 \item The probably most convenient string representation is the prefix notation, also called Polish or Lukasiewicz notation: Function nodes are given before the child nodes' representations (optionally using parentheses). Evaluation is executed recursively, depth-first way, starting from the left; operators are thus placed to the left of their operands.\\
-In case of fixed aritites of the functions (i.e., if the numbers of function's inputs is fixed and known), no parantheses or brackets are needed.
+In case of fixed arity of the functions (i.e., if the numbers of function's inputs is fixed and known), no parentheses or brackets are needed.
 \end{itemize}
 This can be summarized as follows:
 \begin{itemize}
@@ -278,7 +278,7 @@ Populations cannot grow infinitely in most applications. New programs have to re
 The next creation scheme applies: In GAs, crossover and mutation are used sequentially. In GP, crossover and mutation (or a simple copy action) are executed independently; each time a new offspring is to be created, one of these variants is chosen probabilistically.
 \subsection{Process Termination and Results Designation}
 \label{sec:2.3.4}
-The termination criteria of genetic algorithms are also applicable for geneteic programming. For example the number of generations, when a problem-specific success predicate is fulfilled or when the values of fitness for numerous successive best-of-generation individuals appear to have reached a plateau. See figure 2.10, page 42 for a full summary.
+The termination criteria of genetic algorithms are also applicable for genetic programming. For example the number of generations, when a problem-specific success predicate is fulfilled or when the values of fitness for numerous successive best-of-generation individuals appear to have reached a plateau. See figure 2.10, page 42 for a full summary.
 
 After terminating the algorithm, the best individual has to be chosen as the result. In some cases it is a good idea to let the program run against a validation set $V$, which was not used during the GP training phase.
 
@@ -301,13 +301,13 @@ An example of the ant problem is the so-called "Santa Fe trail".
 \subsection{Symbolic Regression}
 Symbolic regression is the induction of mathematical expressions on data. The key feature of this technique is that the object of search is a symbolic description of a model, not just a set of coefficients in a pre-specified model.
 
-The main goal of regression in general is to determine the relationship of a depdendent (target) variable $t$ to a set of specified independent (input) variables $x$. What we want to get is a function $f$ that uses $x$ and a set of coefficients $w$ such that
+The main goal of regression in general is to determine the relationship of a dependent (target) variable $t$ to a set of specified independent (input) variables $x$. What we want to get is a function $f$ that uses $x$ and a set of coefficients $w$ such that
 \begin{center}
 $t = f(x,w) + \epsilon$
 \end{center}
 The form of $f$ is usually pre-defined in standard regression and ANNs. This is not true in symbolic regression. Instead low-level functions are used and combined to more complex formulas during the GP process.
 
-The taks of GP in symbolic regression is to find a composition of the functions, input variables, and coefficients that minimizes the error of the function with repsect to the desired target values. One of the ways to measure the error is taking the mean squared value.
+The taks of GP in symbolic regression is to find a composition of the functions, input variables, and coefficients that minimizes the error of the function with respect to the desired target values. One of the ways to measure the error is taking the mean squared value.
 \subsection{Other GP Applications}
 \clearpage
 \chapter{Problems and Success Factors}
@@ -351,7 +351,7 @@ $ActSelPress = \cfrac{|POP|Succ+\#children\ in\ POOL}{|POP|}$
 The upper limit of selection pressure ($MaxSelPress$) defines the maximum number of offspring considered for the next generation (as a multiple of the actual population size) that may be produced in order to fulfill the success ratio. This can also be used to detect premature convergence:
 
 
-\textit{If it is no longer possible to find a sufficient number ($SuccRatio*|POP|$) of offspring outperforming their own parents even if ($MaxSelPress*|POP|$) candidates have been generated, premature convergence has occured.}
+\textit{If it is no longer possible to find a sufficient number ($SuccRatio*|POP|$) of offspring outperforming their own parents even if ($MaxSelPress*|POP|$) candidates have been generated, premature convergence has occurred.}
 
 Higher success ratios cause higher selection pressures. Nevertheless, higher settings of success ratio, and therefore also higher selection pressures, do not necessarily cause premature convergence. The reason for this is mainly that the new selection step does not accept clones that are derived from two identical parents per definition. In conventionals GAs such clones represent a major reason for premature convergence of the whole population around a suboptimal value, whereas the new offspring selection works against this phenomenon.
 
@@ -365,7 +365,7 @@ Aspects to consider:
 \item The algorithm should offer the possibility to use different settings also for conventional parent selection, so that the selection mechanisms for the two parents do not necessarily have to be the same. In many examples a combination of proportional selection and random selection has already shown a lot of potential. The two different selection operators are called male and female selection. It is also possible to disable parent selection totally (in the case of scalable selection pressure, after reproduction).
 \item It is reasonable to use more than one crossover and mutation operator. Increase in average selection pressure, the average running time and a broader search space, so retard premature convergence.
 \item An upper and lower limit of population size are necessary.
-\item Include a check for genotypical identiy. This means that only new idividuals are accepted in the sense that there may not be an identical copy of this individual in the population yet. The fitness value can also be used as a (possible dangerous) identity approximation check if a normal check is too time-consuming.
+\item Include a check for genotypical identity. This means that only new individuals are accepted in the sense that there may not be an identical copy of this individual in the population yet. The fitness value can also be used as a (possible dangerous) identity approximation check if a normal check is too time-consuming.
 \item If the maximally allowed population size cannot be filled up with new successful individuals, an upper limit of effort in terms of generated individuals is necessary. The maximum effort per generation is the maximum number of newly generated chromosomes per generation.
 \end{itemize}
 
@@ -380,7 +380,7 @@ Outperform their own parents.\\\\
 This question is not really answered.\\*
 Why does the answer to question 3 make sense? Even parts of chromosomes with below average fitness may play an important role for the ongoing evolutionary process, if they can be combined beneficially with another parent chromosome which motivates gender specific parent selection.\\\\
 \textit{Which parts of the chromosomes of parents of above-average fitness are really worth being preserved?}\\*
-Ideally speaking, exaclty those parts of the chromosomes of above-average parents should be transferred to the next generation that make these individuals above average. What may sound like a tautology at the first view cannot be guaranteed for a lot of problem representations and corresponding operators.
+Ideally speaking, exactly those parts of the chromosomes of above-average parents should be transferred to the next generation that make these individuals above average. What may sound like a tautology at the first view cannot be guaranteed for a lot of problem representations and corresponding operators.
 
 \section{Genetic algorithms, constraints, and the knapsack problem [Genetic Algorithms + Data Structures = Evolution Programs, by Z. Michalewicz]}
 A constrained problem is transformed to an unconstrained one by associating a penalty with all constraint violations; these penalties are included in the function of evaluation. A variety of possible penalty functions can be applied.
@@ -459,20 +459,20 @@ The main conclusions:
 \end{itemize}
 Because in the case of restrictive knapsack capacity, only a very small fraction of possible subsets of items constitute feasible solutions, so most penalty functions will fail. On sparse problems, penalty functions seldom find solutions. This is because penalty functions do not make any distinction between infeasible solutions.
 
-In the future, it might be interesting to experiment with additional formulae for the penalty function.
+In the future, it might be interesting to experiment with additional formulas for the penalty function.
 \clearpage
 
 \setcounter{section}{7}
 \chapter{Combinatorial Optimization: Route Planning}
 \section{The Traveling Salesman Problem}
-Given a finite number of cities along with the cost of travel between each pair of them, the goal is to find the cheapest way of visiting all the cities exactly once and returning to your starting point. Usually the travel costs are symmetric. A tour that passes through all the vertices (cities) is called a Hamiltonian cycle. The goal is to find the shortest Hameltonian cylce.
+Given a finite number of cities along with the cost of travel between each pair of them, the goal is to find the cheapest way of visiting all the cities exactly once and returning to your starting point. Usually the travel costs are symmetric. A tour that passes through all the vertices (cities) is called a Hamiltonian cycle. The goal is to find the shortest Hamiltonian cycle.
 \subsection{Problem Statement and Solution Methodology}
 \subsubsubsection{Definition of the TSP}
 The aim is to find the optimal tour $s^* \in S$ such that $f(s^*) \leq f(s_k) \forall s_k \in S$.\\*
 $[d_{ij}]$ is the distance matrix. If there is no edge between $i$ and $j$, then the distance is set to $\infty$. If $\pi_k(i)$ represents the city visited next after city $i$, the total distance function becomes\\*
 $f(s_k) = \sum_{i=1}^nd_{i\pi_k(i)}$\\
-TSP can, but don't have to satisfy the triangle inquality.\\*
-In an Euclidian TSP, it is mandatory to specify the coordinates of each node in order to calculate the distance:\\*
+TSP can, but don't have to satisfy the triangle inequality.\\*
+In an Euclidean TSP, it is mandatory to specify the coordinates of each node in order to calculate the distance:\\*
 $d_{ij} = \sqrt{(x_i-x_j)^2 + (y_i - y_j)^2}$
 \subsubsubsection{Versions of the TSP}
 \paragraph{Traveling Salesman Subtour Problems (TSSP)}
@@ -480,7 +480,7 @@ Not all cities have to be visited. There is some kind of profit function in orde
 \paragraph{Postman Problems}
 Not a set of nodes, but a set of edges have to be visited (can be interpreted as streets). Also here, the goal is to minimize the total route length.\\
 \paragraph{Time Dependent TSP}
-The cost is a combination of $d_{ij}$ and the piont of time a certain city is visited.\\
+The cost is a combination of $d_{ij}$ and the point of time a certain city is visited.\\
 \paragraph{Traveling Salesman Problem with Time Windows (TSPTW)}
 This is a normal TSP, but the route must start and end in a specific depot within a certain time window. So the cost is the total travel distance and/or the travel time, waiting time and service time.
 \subsubsubsection{Review of Optimal Algorithms}
@@ -505,7 +505,7 @@ These are $k$-change methods that examine a $k$-tuple of edges of a given tour a
 \subsubsubsection{The 2-Opt Method}
 2 edges are replaced (a 2-change operation). A tour $s_i$ is adjacent to a tour $s_j$ if and only if $s_j$ can be derived from $s_i$ by replacing two of $s_i$'s edges. See figure 8.2, page 128 for an example.\\*
 Any route can be derived from any other route by at most $n-2$ 2-change operations. Any solution has exactly $\frac{n(n-1)}{2}$ neighbors. For symmetrical TSPs this is $\frac{n(n-2)}{2}$. Do a 2-change until there is no improvement possible.\\*
-It is very unlikey that a 2-optimal tour is globally optimal.
+It is very unlikely that a 2-optimal tour is globally optimal.
 \subsubsubsection{The 3-Opt Method}
 Cfr.\\*
 $\frac{n(n-1)(n-2)}{2}$ operations are possible.\\*
@@ -526,7 +526,7 @@ Notice that in the second definition, the solution will be a single tour (becaus
 \paragraph{Adjacency Representation}
 A tour is represented as a list of $n$ cities where $j$ is listed in position $i$ if and only if the tour leads from city $i$ to city $j$. For example:\\*
 $(7\ 6\ 8\ 5\ 3\ 4\ 2\ 1)$ means that city $7$ comes right after city $1$.\\*
-This representation is unique, but can represent an illegal tour. $(2\ 1\ 4\ 3)$ contains two separate cylces.\\*
+This representation is unique, but can represent an illegal tour. $(2\ 1\ 4\ 3)$ contains two separate cycles.\\*
 The normal crossover can lead to illegal representations. Alternatives:\\*
 \begin{itemize}
 \item Alternating Edge Crossover: Take the city from position one from the first parent. Then take the city from this new location from the second parent. Keep switching until all cities have been chosen. If a cycle appears, take a random unused city for this location.\\*
@@ -542,7 +542,7 @@ and its indices:
 $(1\ 2\ 3\ 4\ 5\ 6\ 7)$\\*
 Then construct the ordinal representation by saying that the first city is also the first index, then remove $1$ from the indices. $2$ is again the first index (because we removed $1$), \dots.\\*
 In this example we get: $(1\ 1\ 5\ 3\ 3\ 1\ 1)$\\
-The main advantage of this method is the fact that classical crossover can be used because only cities can be chosen that have not been chosen before. Despite this, results using ordinal representaion have been generally poor (the partial tour to the right of the crossover point are split in a random way).\\
+The main advantage of this method is the fact that classical crossover can be used because only cities can be chosen that have not been chosen before. Despite this, results using ordinal representation have been generally poor (the partial tour to the right of the crossover point are split in a random way).\\
 \paragraph{Path Representation}
 The path representation is exactly the same as a normal tour representation. Crossover operators:
 \begin{itemize}
@@ -578,7 +578,7 @@ The first practical commercial area for genetic programming will probably be des
 \section{Out of the Primordial Ooze}
 Example of the low-pass filter. Start embryonic. Apply progressive application of circuit-constructing functions. Other examples are antennas and (cruise/PID) controllers.
 
-\section{Evolvable Hardware}
+\section{Evolveable Hardware}
 Rapidly reconfigurable field-programmable gate arrays. Each cell is programmable and also the interconnections are programmable by changing the configuration bits.
 
 \section{Run Times}
@@ -647,7 +647,7 @@ The simplest way to produce an incremental GA concept learner is to use GABL inc
 \subsection{Evaluating Concept Learning Programs}
 We prefer the use of learning curves which measure the change in a system's performance over time in a possibly changing environment.
 
-We are interested in examining how an incremental system changes its predicticve performance over time. Instead of computing the overall performance (batch mode), we examine a small window of recent outcomes.
+We are interested in examining how an incremental system changes its predictive performance over time. Instead of computing the overall performance (batch mode), we examine a small window of recent outcomes.
 
 \subsection{Implementation Details}
 
@@ -660,7 +660,7 @@ GABIL, however, should perform uniformly well on target concepts of varying comp
 
 Recall that each point on a curve represents the percent correct achieved over the previous 10 instances (and averages over 10 runs).
 
-In ID5R, each negative example is represented by a unique leaf node in the decision tree. For this reason, ID5R cannot generalize over the negative examples, and has a good chance of predicting any negave example incorrectly. Even positive examples are not generalized well. It is clear that the decision tree representation is poor for representing this particular concept since the syntactic complexity of a terget concept corresponds roughly with the size of its decision tree representation.
+In ID5R, each negative example is represented by a unique leaf node in the decision tree. For this reason, ID5R cannot generalize over the negative examples, and has a good chance of predicting any negative example incorrectly. Even positive examples are not generalized well. It is clear that the decision tree representation is poor for representing this particular concept since the syntactic complexity of a target concept corresponds roughly with the size of its decision tree representation.
 
 \section{Further Analysis and Comparisons}
 
@@ -713,7 +713,7 @@ Even though the last approach does not have the same theoretical support, it is 
 While applications of the traditional domain-independent operators provide for a domain-independent search conducted in the artificial representation space, we set the genetic algorithm to operate directly in the problem space by organizing the work there.
 
 \subsection{Representation and search space}
-We adopt the multiple-valued logic language $VL_1$ as the choise for the chromosome's representation. Then the search space is the space of sets of rules, spanned by given features. This is the space of $VL_1$ concept descriptions. Because we do not employ any extra axioms, it is quite feasible and possible to have redundant descriptions, such as
+We adopt the multiple-valued logic language $VL_1$ as the choice for the chromosome's representation. Then the search space is the space of sets of rules, spanned by given features. This is the space of $VL_1$ concept descriptions. Because we do not employ any extra axioms, it is quite feasible and possible to have redundant descriptions, such as
 \begin{center}
 $[Age > Young] ::> HeartRiskGroup$, $[Age = Old] ::> HeartRiskGroup$
 \end{center}
@@ -816,7 +816,7 @@ For example, assuming that an attribute has five domain values, the binary vecto
 A complex is represented by a vector of conditions. See the example on page 210.
 
 \subsection{Data compilation}
-Prior to learning all data are precompiled into vectors, like in table 3, page 211.
+Prior to learning all data are pre-compiled into vectors, like in table 3, page 211.
 
 To compute the result of a 'rules copy' operator, only a bitwise OR has to by applied.
 
@@ -889,7 +889,7 @@ A virtual 'brain' determines the behavior of a creature. See figure 4, page 32.
 \subsection{Sensors}
 Each sensor is contained within a specific part of the body. Three types of sensors were used:
 \begin{itemize}
-\item \textit{Joint angle sensors} give the current value for each degreee of freedom of each joint.
+\item \textit{Joint angle sensors} give the current value for each degree of freedom of each joint.
 \item \textit{Contact sensors} activate if a contact is made.
 \item \textit{Photosensors} react to a global light source position. The source of one color is located in the desirable cube, and the other is located at the center of mass of the opponent.
 \end{itemize}
@@ -976,7 +976,7 @@ Each GA was evaluated by using it to perform five optimizaiton tasks, one for ea
 
 \subsection{Performance Measures}
 \textit{Online performance} of a search strategy $s$ and a response surface $e$: $U_e(s,T) = ave_t(u_e(t))$, where $u_e(t)$ is the performance of the structure evaluated at time $t$. Online performance is the average performance of all tested structures over the course of the search.\\
-\textit{Offline performance}: $U_e^*(s,T) = ave_t(u_e^*(t))$ where $u_e^*(t)$ is the best performance achieved in the time interval $[0,t]$. Offline performance is preffered if it is possible (e.g. simulation), while the best structure so far is used to control the online system.
+\textit{Offline performance}: $U_e^*(s,T) = ave_t(u_e^*(t))$ where $u_e^*(t)$ is the best performance achieved in the time interval $[0,t]$. Offline performance is preferred if it is possible (e.g. simulation), while the best structure so far is used to control the online system.
 
 \subsection{Experimental Procedures}
 Two experiments were performed, one to optimize online performance and one to optimize offline performance.
@@ -1045,10 +1045,10 @@ Make sure that there is no overlapping between courses for the same student. All
 
 This amounts to a collection of binary constraints of the form "$e_1$ must not overlap in time with $e_2$.".
 
-\subsection{Event Spread contraints}
+\subsection{Event Spread constraints}
 Calculate the spread of every student or the whole timetable.
 
-The number of instances of the following two offences:
+The number of instances of the following two offenses:
 \begin{itemize}
 \item Four events are scheduled in one day.
 \item Five or more events are scheduled in one day.
@@ -1074,19 +1074,19 @@ The EA used a population size of 50, uniform crossover, gene-by-gene mutation, a
 Ten trails were run for each experiment and results for each problem record for the best $V$ (= vector of violations) found overall and the mean of $V$ over the ten trails for each of the three selection schemes.
 
 \subsection{Results}
-The course organisers did a horrible job. TOUR did an awesome job with just a few or even no violations. \textgreater\ FIT \textgreater\ RANK.
+The course organizers did a horrible job. TOUR did an awesome job with just a few or even no violations. \textgreater\ FIT \textgreater\ RANK.
 
 \section{Discussion}
 The results clearly indicate the benefits of using a penalty-function based on EA approach on this problem.
 
 \subsection{Scaling up}
-Hard to say. Solutions near optimal regions are rapidly found on large complex problems, but further evolution towards optima becomes considerably slow and may stop altogether. Fortunately, this difficulty is readily aided by the use of smart hillclimbing mutation operators.
+Hard to say. Solutions near optimal regions are rapidly found on large complex problems, but further evolution towards optima becomes considerably slow and may stop altogether. Fortunately, this difficulty is readily aided by the use of smart hill climbing mutation operators.
 
-\subsection{Generalising Across}
+\subsection{Generalizing Across}
 As long as the number of constraints and the computational ease of checking them make for a relatively speedy evaluation function, which is usually the case when using the direct chromosome representation.
 
 \subsection{Different Approaches}
-Different representations, use of domain specific recombination operators and hybridisation of the EA (evolutionary algorithms) with other techniques are all candidates for refinement.
+Different representations, use of domain specific recombination operators and hybridization of the EA (evolutionary algorithms) with other techniques are all candidates for refinement.
 
 \subsection{Practice}
 \dots
